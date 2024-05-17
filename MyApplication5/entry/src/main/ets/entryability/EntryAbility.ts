@@ -46,28 +46,8 @@ export default class EntryAbility extends UIAbility {
         JSON.stringify(exception)?? '');
     }
 
-    // 在启动指定实例模式的UIAbility时，给每一个UIAbility实例配置一个独立的Key标识
-    // 例如在文档使用场景中，可以用文档路径作为Key标识
-    function getInstance() {
-      // ...
-    }
-
-    let want = {
-      deviceId: '', // deviceId为空表示本设备
-      bundleName: 'com.example.myapplication',
-      abilityName: 'FuncAbility',
-      moduleName: 'module1', // moduleName非必选
-      parameters: { // 自定义信息
-        instanceKey: getInstance(),
-      },
-    }
-    // context为调用方UIAbility的AbilityContext
-    // this.context.startAbility(want).then(() => {
-    //   // ...
-    // }).catch((err) => {
-    //   // ...
-    // })
-
+    // 获取UIAbility实例的上下文
+    let context = this.context;
 
     // Main window is created, set main page for this ability
     hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');

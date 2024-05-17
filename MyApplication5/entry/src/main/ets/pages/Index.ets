@@ -3,6 +3,7 @@ import image from '@ohos.multimedia.image';
 import router from '@ohos.router';
 import CommonConstants from '../Common/constants/CommonConstants';
 import Logger from '../Common/utils/Logger';
+import common from '@ohos.app.ability.common';
 
 // overBuilder( $$ : { paramA1: string, paramB1: string } );
 // 按引用传递参数 全局自定义构建函数
@@ -96,6 +97,8 @@ struct Index {
   // @LocalStorageLink/Prop decorated variables
   @LocalStorageLink('PropA') propA: number = 1;
 
+  private context = getContext(this) as common.UIAbilityContext;
+
   // 只有被@Entry装饰的组件才可以调用页面的生命周期
   onPageShow() {
     console.info('Index onPageShow');
@@ -134,6 +137,32 @@ struct Index {
     .backgroundColor(Color.Yellow)
     .onClick(() => {
       this.heightValue = 200
+    })
+  }
+
+  // 在启动指定实例模式的UIAbility时，给每一个UIAbility实例配置一个独立的Key标识
+  // 例如在文档使用场景中，可以用文档路径作为Key标识
+  getInstance() {
+  // ...
+    return 'FuncAbility';
+  }
+
+  startAbilityTest() {
+    let want = { // Want参数信息
+      deviceId: '', // deviceId为空表示本设备
+      bundleName: 'com.example.myapplication',
+      abilityName: 'FuncAbility',
+      moduleName: 'module1', // moduleName非必选
+      parameters: { // 自定义信息
+        instanceKey: this.getInstance(),
+      },
+    };
+    // context为调用方UIAbility的AbilityContext
+    // let context = getContext(this) as common.UIAbilityContext;
+    this.context.startAbility(want).then(() => {
+      // ...
+    }).catch((err) => {
+      // ...
     })
   }
 
