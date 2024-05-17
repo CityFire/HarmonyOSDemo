@@ -26,7 +26,8 @@
               "entity.system.default"
             ],
             "actions": [
-              "ohos.want.action.viewData"
+              "ohos.want.action.viewData",
+              "ohos.want.action.editData"
             ]
           }
         ]

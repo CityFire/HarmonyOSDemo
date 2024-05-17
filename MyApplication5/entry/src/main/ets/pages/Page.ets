@@ -5,7 +5,7 @@ const RESULT_CODE: number = 1001;
 let abilityResult = {
   resultCode: RESULT_CODE,
   want: {
-    bundleName: 'com.example.myapplication',
+    bundleName: 'com.example.myapplication5',
     abilityName: 'FuncAbility',
     moduleName: 'entry',
     parameters: {

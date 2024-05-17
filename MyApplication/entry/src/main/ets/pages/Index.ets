@@ -3,6 +3,19 @@
 import router from '@ohos.router';
 import common from '@ohos.app.ability.common';
 
+const RESULT_CODE: number = 1001;
+let abilityResult = {
+  resultCode: RESULT_CODE,
+  want: {
+    bundleName: 'com.example.myapplication',
+    abilityName: 'EntryAbility',
+    moduleName: 'entry',
+    parameters: {
+      payResult: 'OKay',
+    },
+  },
+}
+
 @Entry
 @Component
 struct Index {
@@ -56,7 +69,11 @@ struct Index {
         .onClick(() => {
           console.info(`Succeeded in clicking the 'stop' button.`)
           // context为需要停止的UIAbility实例的AbilityContext
-          this.context.terminateSelf((err) => {
+          // this.context.terminateSelf((err) => {
+          //   console.error(`Failed to jump to the prefix page.Code is ${err.code}, message is ${err.message}`)
+          // });
+          this.context.terminateSelfWithResult(abilityResult, (err) => {
+            // ...
             console.error(`Failed to jump to the prefix page.Code is ${err.code}, message is ${err.message}`)
           });
         })

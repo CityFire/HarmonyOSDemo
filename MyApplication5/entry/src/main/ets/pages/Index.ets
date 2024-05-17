@@ -163,7 +163,7 @@ struct Index {
     let want = { // Want参数信息
       deviceId: '', // deviceId为空表示本设备
       // 如果希望隐式仅在特定的捆绑包中进行查询，请取消下面的注释。
-      // bundleName: 'com.example.myapplication',
+      // bundleName: 'com.example.myapplication5',
       // abilityName: 'FuncAbility',
       // moduleName: 'entry', // moduleName非必选
       action: 'ohos.want.action.viewData',
@@ -189,7 +189,10 @@ struct Index {
       if (data?.resultCode === RESULT_CODE) {
         // 解析被调用方UIAbility返回的信息
         let info = data.want?.parameters?.info;
+        // 解析被调用方UIAbility返回的信息
+        let payResult = data.want?.parameters?.payResult;
         console.info('startAbility parse success info:' + info);
+        console.info('startAbility parse success payResult:' + payResult);
       }
     }).catch((err) => {
       console.error('startAbility err' + err);
