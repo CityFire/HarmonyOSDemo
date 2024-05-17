@@ -162,9 +162,13 @@ struct Index {
   startAbilityTest() {
     let want = { // Want参数信息
       deviceId: '', // deviceId为空表示本设备
-      bundleName: 'com.example.myapplication',
-      abilityName: 'FuncAbility',
-      moduleName: 'entry', // moduleName非必选
+      // 如果希望隐式仅在特定的捆绑包中进行查询，请取消下面的注释。
+      // bundleName: 'com.example.myapplication',
+      // abilityName: 'FuncAbility',
+      // moduleName: 'entry', // moduleName非必选
+      action: 'ohos.want.action.viewData',
+      // entities可以被省略。
+      entities: ['entity.system.default'],
       parameters: { // 自定义信息
         info: '来自EntryAbility Index页面',
         instanceKey: this.getInstance(),
