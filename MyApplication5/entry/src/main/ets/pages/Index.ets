@@ -1,6 +1,8 @@
 import http from '@ohos.net.http'
 import image from '@ohos.multimedia.image';
 import router from '@ohos.router';
+import CommonConstants from '../Common/constants/CommonConstants';
+import Logger from '../Common/utils/Logger';
 
 // overBuilder( $$ : { paramA1: string, paramB1: string } );
 // 按引用传递参数 全局自定义构建函数
@@ -273,9 +275,9 @@ struct Index {
       Row() {
         Column() {
           // this.showChild为true，创建Child子组件，执行Child aboutToAppear
-          if (this.showChild) {
-            Child()
-          }
+          // if (this.showChild) {
+          //   Child()
+          // }
 
           // this.showChild为false，删除Child子组件，执行Child aboutToDisappear
           Button('delete Child').onClick(() => {
@@ -287,10 +289,14 @@ struct Index {
             .onClick(() => {
               console.info(`Succeeded in clicking the 'Next' button.`)
               // 跳转到第二页
-              router.pushUrl({ url: 'pages/Page2' }).then(() => {
+              router.pushUrl({
+                url: CommonConstants.SECOND_URL,
+                params: { src: CommonConstants.SECOND_SRC_MSG }
+              }).then(() => {
                 console.info('Succeeded in jumping to the second page.')
               }).catch((err) => {
                 console.error(`Failed to jump to the second page.Code is ${err.code}, message is ${err.message}`)
+                Logger.info('[Index]', 'IndexPage push error' + JSON.stringify(err));
               })
             })
         }.width('100%')
