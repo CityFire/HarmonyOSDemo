@@ -5,6 +5,8 @@ import CommonConstants from '../Common/constants/CommonConstants';
 import Logger from '../Common/utils/Logger';
 import common from '@ohos.app.ability.common';
 
+const RESULT_CODE: number = 1001;
+
 // overBuilder( $$ : { paramA1: string, paramB1: string } );
 // 按引用传递参数 全局自定义构建函数
 @Builder function overBuilder($$: { paramA1: string }) {
@@ -162,17 +164,31 @@ struct Index {
       deviceId: '', // deviceId为空表示本设备
       bundleName: 'com.example.myapplication',
       abilityName: 'FuncAbility',
-      moduleName: 'module1', // moduleName非必选
+      moduleName: 'entry', // moduleName非必选
       parameters: { // 自定义信息
+        info: '来自EntryAbility Index页面',
         instanceKey: this.getInstance(),
       },
     };
     // context为调用方UIAbility的AbilityContext
     // let context = getContext(this) as common.UIAbilityContext;
-    this.context.startAbility(want).then(() => {
-      // ...
+    // this.context.startAbility(want).then(() => {
+    //   // ...
+    //   console.info('startAbility success');
+    // }).catch((err) => {
+    //   // ...
+    //   console.error('startAbility err' + err);
+    // })
+
+    this.context.startAbilityForResult(want).then((data) => {
+      //
+      if (data?.resultCode === RESULT_CODE) {
+        // 解析被调用方UIAbility返回的信息
+        let info = data.want?.parameters?.info;
+        console.info('startAbility parse success info:' + info);
+      }
     }).catch((err) => {
-      // ...
+      console.error('startAbility err' + err);
     })
   }
 
@@ -328,9 +344,14 @@ struct Index {
           // }
 
           // this.showChild为false，删除Child子组件，执行Child aboutToDisappear
-          Button('delete Child').onClick(() => {
-            this.showChild = false;
+          // Button('delete Child').onClick(() => {
+          //   this.showChild = false;
+          // }).margin(10)
+
+          Button('start FuncAbility').onClick(() => {
+            this.startAbilityTest();
           }).margin(10)
+
 
           // push到Page2页面，执行onPageHide
           Button('push to next page')

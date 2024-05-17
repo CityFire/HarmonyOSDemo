@@ -10,6 +10,11 @@ export default class FuncAbility extends UIAbility {
 
     // AbilityB覆盖了AbilityA在globalThis中存放的context
     // globalThis.context = this.context;
+
+    // 接收调用方UIAbility传过来的参数
+    let funcAbilityWant = want;
+    let info = funcAbilityWant?.parameters?.info;
+    // ...
   }
 
   onDestroy() {
@@ -20,7 +25,7 @@ export default class FuncAbility extends UIAbility {
     // Main window is created, set main page for this ability
     hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');
 
-    windowStage.loadContent('pages/Index', (err, data) => {
+    windowStage.loadContent('pages/Page', (err, data) => {
       if (err.code) {
         hilog.error(0x0000, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err) ?? '');
         return;
