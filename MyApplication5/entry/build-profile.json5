@@ -1,0 +1,15 @@
+{
+  "apiType": 'stageMode',
+  "buildOption": {
+    // "artifactType": "obfuscation" // original
+  },
+  "targets": [
+    {
+      "name": "default",
+      "runtimeOS": "HarmonyOS"
+    },
+    {
+      "name": "ohosTest",
+    }
+  ]
+}
