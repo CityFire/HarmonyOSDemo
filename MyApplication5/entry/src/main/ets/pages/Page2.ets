@@ -6,6 +6,30 @@ let storage = LocalStorage.GetShared()
 struct Page2 {
   @LocalStorageLink('PropA') propA: number = 2;
 
+  onPageShow() {
+    console.info('Page2 onPageShow');
+  }
+
+  onPageHide() {
+    console.info('Page2 onPageHide');
+  }
+
+  // 只有被@Entry装饰的组件才可以调用页面的生命周期
+  onBackPress() {
+    console.info('Page2 onBackPress');
+  }
+
+  // 组件生命周期
+  aboutToAppear() {
+    console.info('Page2 aboutToAppear');
+
+  }
+
+  // 组件生命周期
+  aboutToDisappear() {
+    console.info('Page2 aboutToDisappear');
+  }
+
   build() {
     Row() {
       Column() {

@@ -23,6 +23,11 @@ export default class CommonConstants {
   static readonly SECOND_MESSAGE: string = 'Second Page';
 
   /**
+   * The funcAbility page url.
+   */
+  static readonly FUNCABILITY_URL: string = 'pages/FuncPage';
+
+  /**
    * The src param.
    */
   static readonly SECOND_SRC_PARAM: string = 'src';

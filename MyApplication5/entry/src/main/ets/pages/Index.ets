@@ -163,14 +163,15 @@ struct Index {
     let want = { // Want参数信息
       deviceId: '', // deviceId为空表示本设备
       // 如果希望隐式仅在特定的捆绑包中进行查询，请取消下面的注释。
-      // bundleName: 'com.example.myapplication5',
-      // abilityName: 'FuncAbility',
-      // moduleName: 'entry', // moduleName非必选
-      action: 'ohos.want.action.viewData',
+      bundleName: 'com.example.myapplication5',
+      abilityName: 'FuncAbility',
+      moduleName: 'entry', // moduleName非必选
+      // action: 'ohos.want.action.viewData',
       // entities可以被省略。
-      entities: ['entity.system.default'],
+      // entities: ['entity.system.default'],
       parameters: { // 自定义信息
         info: '来自EntryAbility Index页面',
+        router: 'funcA',
         instanceKey: this.getInstance(),
       },
     };

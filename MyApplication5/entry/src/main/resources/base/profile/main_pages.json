@@ -2,8 +2,9 @@
   "src": [
     "pages/Index",
     "pages/Page2",
-    "pages/Page",
+    "pages/FuncPage",
     "pages/component/AppStorage2Component",
-    "pages/component/ArticlesComponent"
+    "pages/component/ArticlesComponent",
+    "pages/PayPage"
   ]
 }
