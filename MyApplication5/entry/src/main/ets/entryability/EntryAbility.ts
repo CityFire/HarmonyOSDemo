@@ -6,7 +6,7 @@ import Want from '@ohos.app.ability.Want';
 import AbilityStage from '@ohos.app.ability.AbilityStage';
 import Logger from '../Common/utils/Logger';
 
-const TAG = '[EntryAbility]';
+const TAG: string = '[Example].[Entry].[EntryAbility]';
 
 export default class EntryAbility extends UIAbility {
   para:Record<string, number> = { 'PropA': 47 };
@@ -18,14 +18,31 @@ export default class EntryAbility extends UIAbility {
   want: Want;
   launchParam: AbilityConstant.LaunchParam;
 
+  func1(...data) {
+    // 触发事件，完成相应的业务操作
+    Logger.info(TAG, '1. ' + JSON.stringify(data));
+  }
+
   onCreate(want, launchParam) {
     // hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onCreate');
     Logger.info(TAG, 'Ability onCreate');
     AppStorage.SetOrCreate('abilityWant', want);
+
+    // 获取eventHub
+    let eventhub = this.context.eventHub;
+    // 执行订阅操作
+    eventhub.on('event1', this.func1);
+    eventhub.on('event1', (...data) => {
+      // 触发事件，完成相应的业务操作
+      Logger.info(TAG, '2. ' + JSON.stringify(data));
+    });
+
   }
 
   onDestroy() {
     hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');
+    // context为UIAbility实例的AbilityContext 调用eventHub.off()方法取消该事件的订阅
+    this.context.eventHub.off('event1');
   }
 
   onWindowStageCreate(windowStage: window.WindowStage) {
