@@ -5,6 +5,11 @@ import window from '@ohos.window';
 export default class FuncAbility extends UIAbility {
   onCreate(want, launchParam) {
     hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onCreate');
+    // AbilityB从globalThis读取name并输出
+    console.info('name from entryAbilityStr: ' + globalThis.entryAbilityStr);
+
+    // AbilityB覆盖了AbilityA在globalThis中存放的context
+    // globalThis.context = this.context;
   }
 
   onDestroy() {

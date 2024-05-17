@@ -74,6 +74,8 @@ struct FancyUse {
 // 通过getShared接口获取stage共享的LocalStorage实例
 let storage = LocalStorage.GetShared()
 
+let entryAbilityWant;
+
 @Entry(storage)
 @Component
 struct Index {
@@ -102,6 +104,12 @@ struct Index {
   // 只有被@Entry装饰的组件才可以调用页面的生命周期
   onPageShow() {
     console.info('Index onPageShow');
+
+    let ctx = globalThis.context; // 页面中从globalThis中取出context并使用
+    let permissions = ['com.example.permission']
+    ctx.requestPermissionsFromUser(permissions,(result) => {
+      console.info('requestPermissionsFromUser result:' + JSON.stringify(result));
+    });
   }
 
   // 只有被@Entry装饰的组件才可以调用页面的生命周期
@@ -117,6 +125,8 @@ struct Index {
   // 组件生命周期
   aboutToAppear() {
     console.info('MyComponent aboutToAppear');
+
+    entryAbilityWant = globalThis.entryAbilityWant;
   }
 
   // 组件生命周期

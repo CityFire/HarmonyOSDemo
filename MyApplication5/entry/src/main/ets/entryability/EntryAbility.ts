@@ -37,6 +37,11 @@ export default class EntryAbility extends UIAbility {
       Logger.info(TAG, '2. ' + JSON.stringify(data));
     });
 
+    globalThis.entryAblityWant = want;
+
+    globalThis.entryAbilityStr = 'AbilityA'; // AbilityA存放字符串“AbilityA”到globalThis
+
+    globalThis.context = this.context; // AbilityA存放context到globalThis
   }
 
   onDestroy() {
