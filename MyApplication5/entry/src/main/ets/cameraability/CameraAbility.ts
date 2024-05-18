@@ -8,6 +8,28 @@ import formProvider from '@ohos.app.form.formProvider';
 
 let selectPage = "";
 let currentWindowStage = null;
+const MSG_SEND_METHOD: string = 'funE'
+
+// 在收到call事件后会触发callee监听的方法
+function FunECall(data) {
+  // 获取call事件中传递的所有参数
+  let params = JSON.parse(data.readString())
+  if (params.formId !== undefined) {
+    let curFormId = params.formId;
+    let message = params.detail;
+    console.info(`UpdateForm formId: ${curFormId}, message: ${message}`);
+    let formData = {
+      "detail": message
+    };
+    let formMsg = formBindingData.createFormBindingData(formData)
+    formProvider.updateForm(curFormId, formMsg).then((data) => {
+      console.info('updateForm success.' + JSON.stringify(data));
+    }).catch((error) => {
+      console.error('updateForm failed:' + JSON.stringify(error));
+    })
+  }
+  return null;
+}
 
 function FunCCall(data) {
   // 获取call事件中传递的所有参数
@@ -67,8 +89,10 @@ export default class CameraAbility extends UIAbility {
       // 监听call事件所需的方法
       this.callee.on('funC', FunCCall);
       this.callee.on('FunD', FunDCall);
+      this.callee.on(MSG_SEND_METHOD, FunECall);
     } catch (error) {
       console.log('register failed with error. Cause: ' + JSON.stringify(error));
+      console.log(`${MSG_SEND_METHOD} register failed with error ${JSON.stringify(error)}`);
     }
   }
 
@@ -107,6 +131,7 @@ export default class CameraAbility extends UIAbility {
     try {
       this.callee.off('funC');
       this.callee.off('funD');
+      this.callee.off(MSG_SEND_METHOD);
     } catch (error) {
       console.log('unregister failed with error. Cause: ' + JSON.stringify(error));
     }

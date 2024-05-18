@@ -9,6 +9,13 @@ export default class EntryFormAbility extends FormExtensionAbility {
   onAddForm(want) {
     console.log('FormExtensionAbility onAddForm, want:' + want.abilityName);
     // 在入参want中可以取出卡片的唯一标识：formId
+    let formId = want.parameters["ohos.extra.param.key.form_identity"];
+    let dataObj1 = {
+      "formId": formId
+    };
+    let obj1 = formBindingData.createFormBindingData(dataObj1);
+    return obj1;
+    /*
     let formId: string = want.parameters[formInfo.FormParam.IDENTITY_KEY];
     // 使用方创建卡片时触发，提供方需要返回卡片数据绑定类
     // Called to return a FormBindingData object.
@@ -17,6 +24,7 @@ export default class EntryFormAbility extends FormExtensionAbility {
       'time':'11:00'
     };
     return formBindingData.createFormBindingData(formData);
+    */
   }
 
   // 卡片提供方接收临时卡片转常态卡片的通知接口

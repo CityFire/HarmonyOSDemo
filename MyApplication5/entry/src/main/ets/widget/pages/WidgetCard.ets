@@ -37,6 +37,8 @@ struct WidgetCard {
 
   @LocalStorageProp('detail') detail: string = 'init';
 
+  @LocalStorageProp('formId') formId: string = '0';
+
   /*
   build() {
 
@@ -114,6 +116,21 @@ struct WidgetCard {
             'abilityName': 'CameraAbility', // 只能跳转到当前应用下的UIAbility
             'params': {
               'detail': 'RouterFromCard'
+            }
+          });
+        })
+
+      Button('拉至后台')
+        .margin(2)
+        .onClick(() => {
+          console.info('postCardAction to CameraAbility');
+          postCardAction(this, {
+            'action': 'call',
+            'abilityName': 'CameraAbility', // 只能跳转到当前应用下的UIAbility
+            'params': {
+              'method': 'funE',
+              'formId': this.formId,
+              'detail': 'CallFromCard'
             }
           });
         })
