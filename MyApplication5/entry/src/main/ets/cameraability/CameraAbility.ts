@@ -6,27 +6,27 @@ import router from '@ohos.router';
 let selectPage = "";
 let currentWindowStage = null;
 
-function FunACall(data) {
+function FunCCall(data) {
   // 获取call事件中传递的所有参数
-  console.log('FunACall param:' + JSON.stringify(data.readString()));
+  console.log('FunCCall param:' + JSON.stringify(data.readString()));
   router.pushUrl({
-    url: 'pages/FunA',
+    url: 'pages/FunC',
   }).then(() => {
-    console.info('Succeeded in jumping to the FunA page.')
+    console.info('Succeeded in jumping to the FunC page.')
   }).catch((err) => {
-    console.error(`Failed to jump to the FunA page.Code is ${err.code}, message is ${err.message}`)
+    console.error(`Failed to jump to the FunC page.Code is ${err.code}, message is ${err.message}`)
   })
   return null;
 }
 
-function FunBCall(data) {
-  console.log('FunBCall param:' + JSON.stringify(data.readString()));
+function FunDCall(data) {
+  console.log('FunDCall param:' + JSON.stringify(data.readString()));
   router.pushUrl({
-    url: 'pages/FunB',
+    url: 'pages/FunD',
   }).then(() => {
-    console.info('Succeeded in jumping to the FunB page.')
+    console.info('Succeeded in jumping to the FunD page.')
   }).catch((err) => {
-    console.error(`Failed to jump to the FunB page.Code is ${err.code}, message is ${err.message}`)
+    console.error(`Failed to jump to the FunD page.Code is ${err.code}, message is ${err.message}`)
   })
   return null;
 }
@@ -46,8 +46,8 @@ export default class CameraAbility extends UIAbility {
     // 如果UIAbility第一次启动，在收到call事件后会触发onCreate生命周期回调
     try {
       // 监听call事件所需的方法
-      this.callee.on('funA', FunACall);
-      this.callee.on('funB', FunBCall);
+      this.callee.on('funC', FunCCall);
+      this.callee.on('FunD', FunDCall);
     } catch (error) {
       console.log('register failed with error. Cause: ' + JSON.stringify(error));
     }
@@ -70,8 +70,8 @@ export default class CameraAbility extends UIAbility {
   onDestroy() {
     hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');
     try {
-      this.callee.off('funA');
-      this.callee.off('funB');
+      this.callee.off('funC');
+      this.callee.off('funD');
     } catch (error) {
       console.log('unregister failed with error. Cause: ' + JSON.stringify(error));
     }

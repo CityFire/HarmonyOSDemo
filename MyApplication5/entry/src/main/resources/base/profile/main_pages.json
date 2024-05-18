@@ -7,6 +7,8 @@
     "pages/component/ArticlesComponent",
     "pages/PayPage",
     "pages/FunA",
-    "pages/FunB"
+    "pages/FunB",
+    "pages/FunC",
+    "pages/FunD"
   ]
 }

@@ -87,31 +87,53 @@ struct WidgetCard {
   build() {
     Column() {
       Button('功能A')
-        .margin('20%')
+        .margin(2)
         .onClick(() => {
           console.info('Jump to CameraAbility funA');
           postCardAction(this, {
-            // 'action': 'router',
-            'action': 'call',
+            'action': 'router',
             'abilityName': 'CameraAbility', // 只能跳转到当前应用下的UIAbility
             'params': {
-              // 'targetPage': 'funA' // 在CameraAbility中处理这个信息
-              'method': 'funA' // 在CameraAbility中调用的方法名
+              'targetPage': 'funA' // 在CameraAbility中处理这个信息
             }
           });
         })
 
       Button('功能B')
-        .margin('20%')
+        .margin(2)
         .onClick(() => {
           console.info('Jump to CameraAbility funB');
           postCardAction(this, {
-            // 'action': 'router',
+            'action': 'router',
+            'abilityName': 'CameraAbility', // 只能跳转到当前应用下的UIAbility
+            'params': {
+              'targetPage': 'funB' // 在CameraAbility中处理这个信息
+            }
+          });
+        })
+
+      Button('功能C')
+        .margin(2)
+        .onClick(() => {
+          console.info('Jump to CameraAbility funC');
+          postCardAction(this, {
             'action': 'call',
             'abilityName': 'CameraAbility', // 只能跳转到当前应用下的UIAbility
             'params': {
-              // 'targetPage': 'funB' // 在CameraAbility中处理这个信息
-              'method': 'funB', // 在EntryAbility中调用的方法名
+              'method': 'funC' // 在CameraAbility中调用的方法名
+            }
+          });
+        })
+
+      Button('功能D')
+        .margin(2)
+        .onClick(() => {
+          console.info('Jump to CameraAbility funD');
+          postCardAction(this, {
+            'action': 'call',
+            'abilityName': 'CameraAbility', // 只能跳转到当前应用下的UIAbility
+            'params': {
+              'method': 'funD', // 在EntryAbility中调用的方法名
               'num': 1 // 需要传递的其他参数
             }
           });
