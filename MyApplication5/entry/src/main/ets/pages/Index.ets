@@ -97,6 +97,8 @@ struct Index {
 
   @State book: Book = new Book('100 secrets of C++', 765);
 
+  @State rotateAngle: number = 0;
+
   // can access LocalStorage instance using
   // @LocalStorageLink/Prop decorated variables
   @LocalStorageLink('PropA') propA: number = 1;
@@ -358,7 +360,14 @@ struct Index {
 
           Button('start FuncAbility').onClick(() => {
             this.startAbilityTest();
-          }).margin(10)
+            this.rotateAngle = 90;
+          })
+            .margin(10)
+            .rotate({ angle: this.rotateAngle })
+            .animation({
+              curve: Curve.EaseOut,
+              playMode: PlayMode.AlternateReverse
+            })
 
 
           // push到Page2页面，执行onPageHide

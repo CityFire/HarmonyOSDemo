@@ -31,7 +31,9 @@ struct WidgetCard {
    */
   readonly FULL_HEIGHT_PERCENT: string = '100%';
 
+  /*
   build() {
+
     Row() {
       Column() {
         Text(this.TITLE)
@@ -49,5 +51,68 @@ struct WidgetCard {
         }
       });
     })
+
+    /*
+    Button('跳转')
+      .width('40%')
+      .height('20%')
+      .onClick(() => {
+        postCardAction(this, {
+          'action': 'router',
+          'bundleName': 'com.example.myapplication5',
+          'abilityName': 'EntryAbility',
+          'params': {
+            'message': 'testForRouter' // 自定义要发送的message
+          }
+        });
+      })
+
+    Button('拉至后台')
+      .width('40%')
+      .height('20%')
+      .onClick(() => {
+        postCardAction(this, {
+          'action': 'call',
+          'bundleName': 'com.example.myapplication5',
+          'abilityName': 'EntryAbility',
+          'params': {
+            'method': 'fun', // 自定义调用的方法名，必填
+            'message': 'testForCall' // 自定义要发送的message
+          }
+        });
+      })
+      */
+  // }
+
+  build() {
+    Column() {
+      Button('功能A')
+        .margin('20%')
+        .onClick(() => {
+          console.info('Jump to CameraAbility funA');
+          postCardAction(this, {
+            'action': 'router',
+            'abilityName': 'CameraAbility', // 只能跳转到当前应用下的UIAbility
+            'params': {
+              'targetPage': 'funA' // 在CameraAbility中处理这个信息
+            }
+          });
+        })
+
+      Button('功能B')
+        .margin('20%')
+        .onClick(() => {
+          console.info('Jump to CameraAbility funB');
+          postCardAction(this, {
+            'action': 'router',
+            'abilityName': 'CameraAbility', // 只能跳转到当前应用下的UIAbility
+            'params': {
+              'targetPage': 'funB' // 在CameraAbility中处理这个信息
+            }
+          });
+        })
+    }
+    .width('100%')
+    .height('100%')
   }
 }

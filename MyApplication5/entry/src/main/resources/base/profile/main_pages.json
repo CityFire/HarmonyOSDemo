@@ -5,6 +5,8 @@
     "pages/FuncPage",
     "pages/component/AppStorage2Component",
     "pages/component/ArticlesComponent",
-    "pages/PayPage"
+    "pages/PayPage",
+    "pages/FunA",
+    "pages/FunB"
   ]
 }

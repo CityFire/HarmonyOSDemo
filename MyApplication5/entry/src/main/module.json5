@@ -40,6 +40,15 @@
         "startWindowIcon": "$media:icon",
         "startWindowBackground": "$color:start_window_background",
         "launchType": "specified"
+      },
+      {
+        "name": "CameraAbility",
+        "srcEntry": "./ets/cameraability/CameraAbility.ts",
+        "description": "$string:CameraAbility_desc",
+        "icon": "$media:icon",
+        "label": "$string:CameraAbility_label",
+        "startWindowIcon": "$media:icon",
+        "startWindowBackground": "$color:start_window_background"
       }
     ],
     "extensionAbilities": [

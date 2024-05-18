@@ -27,6 +27,14 @@
     {
       "name": "EntryFormAbility_label",
       "value": "form_label"
+    },
+    {
+      "name": "CameraAbility_desc",
+      "value": "description"
+    },
+    {
+      "name": "CameraAbility_label",
+      "value": "label"
     }
   ]
 }
