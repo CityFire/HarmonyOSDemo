@@ -105,6 +105,33 @@ struct WidgetCard {
           });
         })
 
+      Button('跳转')
+        .margin(2)
+        .onClick(() => {
+          console.info('postCardAction to CameraAbility');
+          postCardAction(this, {
+            'action': 'router',
+            'abilityName': 'CameraAbility', // 只能跳转到当前应用下的UIAbility
+            'params': {
+              'detail': 'RouterFromCard'
+            }
+          });
+        })
+      Text(`${this.detail}`).margin(2)
+
+      Button('刷新')
+        .onClick(() => {
+          postCardAction(this, {
+          'action': 'message',
+          'params': {
+            'msgTest': 'messageEvent'
+          }
+          });
+        }).margin(2)
+
+      Text(`${this.title}`)
+      Text(`${this.detail}`)
+
       Button('功能B')
         .margin(2)
         .onClick(() => {
@@ -117,19 +144,6 @@ struct WidgetCard {
             }
           });
         })
-
-      Button('刷新')
-        .onClick(() => {
-          postCardAction(this, {
-            'action': 'message',
-            'params': {
-              'msgTest': 'messageEvent'
-            }
-          });
-        }).margin(2)
-
-      Text(`${this.title}`)
-      Text(`${this.detail}`)
 
       Button('功能C')
         .margin(2)

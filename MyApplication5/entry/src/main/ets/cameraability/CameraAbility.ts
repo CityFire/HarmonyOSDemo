@@ -2,6 +2,9 @@ import UIAbility from '@ohos.app.ability.UIAbility';
 import hilog from '@ohos.hilog';
 import window from '@ohos.window';
 import router from '@ohos.router';
+import formInfo from '@ohos.app.form.formInfo';
+import formBindingData from '@ohos.app.form.formBindingData';
+import formProvider from '@ohos.app.form.formProvider';
 
 let selectPage = "";
 let currentWindowStage = null;
@@ -37,6 +40,22 @@ export default class CameraAbility extends UIAbility {
     hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onCreate');
     // 获取router事件中传递的targetPage参数
     console.info("onCreate want:" + JSON.stringify(want));
+    
+    if (want.parameters[formInfo.FormParam.IDENTITY_KEY] !== undefined) {
+      let curFormId = want.parameters[formInfo.FormParam.IDENTITY_KEY];
+      let message = JSON.parse(want.parameters.params).detail;
+      console.info(`UpdateForm formId: ${curFormId}, message: ${message}`);
+      let formData = {
+        "detail": message + ': onCreate UIAbility.', // 和卡片布局中对应
+      };
+      let formMsg = formBindingData.createFormBindingData(formData)
+      formProvider.updateForm(curFormId, formMsg).then((data) => {
+        console.info('updateForm success.' + JSON.stringify(data));
+      }).catch((error) => {
+        console.error('updateForm failed:' + JSON.stringify(error));
+      })
+    }
+    
     if (want.parameters.params !== undefined) {
       let params = JSON.parse(want.parameters.params);
       console.info("onCreate router targetPage:" + params.targetPage);
@@ -56,6 +75,22 @@ export default class CameraAbility extends UIAbility {
   // 如果UIAbility已在后台运行，在收到Router事件后会触发onNewWant生命周期回调
   onNewWant(want, launchParam) {
     console.info("onNewWant want:" + JSON.stringify(want));
+
+    if (want.parameters[formInfo.FormParam.IDENTITY_KEY] !== undefined) {
+      let curFormId = want.parameters[formInfo.FormParam.IDENTITY_KEY];
+      let message = JSON.parse(want.parameters.params).detail;
+      console.info(`UpdateForm formId: ${curFormId}, message: ${message}`);
+      let formData = {
+        "detail": message + ': onNewWant UIAbility.', // 和卡片布局中对应
+      };
+      let formMsg = formBindingData.createFormBindingData(formData)
+      formProvider.updateForm(curFormId, formMsg).then((data) => {
+        console.info('updateForm success.' + JSON.stringify(data));
+      }).catch((error) => {
+        console.error('updateForm failed:' + JSON.stringify(error));
+      })
+    }
+
     if (want.parameters.params !== undefined) {
       let params = JSON.parse(want.parameters.params);
       console.info("onNewWant router targetPage:" + params.targetPage);
