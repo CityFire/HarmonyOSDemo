@@ -1,4 +1,6 @@
-@Entry
+let storage = new LocalStorage();
+
+@Entry(storage)
 @Component
 struct WidgetCard {
   /*
@@ -30,6 +32,10 @@ struct WidgetCard {
    * The height percentage setting.
    */
   readonly FULL_HEIGHT_PERCENT: string = '100%';
+
+  @LocalStorageProp('title') title: string = 'init';
+
+  @LocalStorageProp('detail') detail: string = 'init';
 
   /*
   build() {
@@ -111,6 +117,19 @@ struct WidgetCard {
             }
           });
         })
+
+      Button('刷新')
+        .onClick(() => {
+          postCardAction(this, {
+            'action': 'message',
+            'params': {
+              'msgTest': 'messageEvent'
+            }
+          });
+        }).margin(2)
+
+      Text(`${this.title}`)
+      Text(`${this.detail}`)
 
       Button('功能C')
         .margin(2)

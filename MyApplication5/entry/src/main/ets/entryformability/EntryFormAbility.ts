@@ -2,6 +2,7 @@ import formInfo from '@ohos.app.form.formInfo';
 import formBindingData from '@ohos.app.form.formBindingData';
 import FormExtensionAbility from '@ohos.app.form.FormExtensionAbility';
 import formProvider from '@ohos.app.form.formProvider';
+import data from '@ohos.telephony.data';
 
 export default class EntryFormAbility extends FormExtensionAbility {
   // 卡片提供方接收创建卡片的通知接口
@@ -71,6 +72,17 @@ export default class EntryFormAbility extends FormExtensionAbility {
     // Called when a specified message event defined by the form provider is triggered.
     // 若卡片支持触发事件，则需要重写该方法并实现对事件的触发
     console.log('FormExtensionAbility onFormEvent, formId:' + formId + ', message:' + message);
+    console.info(`FormAbility onEvent, formId = ${formId}, message: ${JSON.stringify(message)}`);
+    let formData = {
+      'title': 'Title Update.', // 和卡片布局中对应
+      'detail': 'Detail Update.', // 和卡片布局中对应
+    };
+    let formInfo = formBindingData.createFormBindingData(formData)
+    formProvider.updateForm(formId, formInfo).then((data) => {
+      console.info('FormAbility updateForm success.' + JSON.stringify(data));
+    }).catch((error) => {
+      console.error('FormAbility updateForm failed: ' + JSON.stringify(error));
+    })
   }
 
   // 卡片提供方接收销毁卡片的通知接口
