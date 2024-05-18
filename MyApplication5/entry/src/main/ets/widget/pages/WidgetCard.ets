@@ -91,10 +91,12 @@ struct WidgetCard {
         .onClick(() => {
           console.info('Jump to CameraAbility funA');
           postCardAction(this, {
-            'action': 'router',
+            // 'action': 'router',
+            'action': 'call',
             'abilityName': 'CameraAbility', // 只能跳转到当前应用下的UIAbility
             'params': {
-              'targetPage': 'funA' // 在CameraAbility中处理这个信息
+              // 'targetPage': 'funA' // 在CameraAbility中处理这个信息
+              'method': 'funA' // 在CameraAbility中调用的方法名
             }
           });
         })
@@ -104,10 +106,13 @@ struct WidgetCard {
         .onClick(() => {
           console.info('Jump to CameraAbility funB');
           postCardAction(this, {
-            'action': 'router',
+            // 'action': 'router',
+            'action': 'call',
             'abilityName': 'CameraAbility', // 只能跳转到当前应用下的UIAbility
             'params': {
-              'targetPage': 'funB' // 在CameraAbility中处理这个信息
+              // 'targetPage': 'funB' // 在CameraAbility中处理这个信息
+              'method': 'funB', // 在EntryAbility中调用的方法名
+              'num': 1 // 需要传递的其他参数
             }
           });
         })

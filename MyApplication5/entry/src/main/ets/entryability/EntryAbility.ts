@@ -47,7 +47,11 @@ export default class EntryAbility extends UIAbility {
   onDestroy() {
     hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');
     // context为UIAbility实例的AbilityContext 调用eventHub.off()方法取消该事件的订阅
-    this.context.eventHub.off('event1');
+    try {
+      this.context.eventHub.off('event1');
+    } catch (error) {
+      console.log('emit failed with error. Cause: ' + JSON.stringify(error));
+    }
   }
 
   onWindowStageCreate(windowStage: window.WindowStage) {

@@ -1,9 +1,35 @@
 import UIAbility from '@ohos.app.ability.UIAbility';
 import hilog from '@ohos.hilog';
 import window from '@ohos.window';
+import router from '@ohos.router';
 
 let selectPage = "";
 let currentWindowStage = null;
+
+function FunACall(data) {
+  // 获取call事件中传递的所有参数
+  console.log('FunACall param:' + JSON.stringify(data.readString()));
+  router.pushUrl({
+    url: 'pages/FunA',
+  }).then(() => {
+    console.info('Succeeded in jumping to the FunA page.')
+  }).catch((err) => {
+    console.error(`Failed to jump to the FunA page.Code is ${err.code}, message is ${err.message}`)
+  })
+  return null;
+}
+
+function FunBCall(data) {
+  console.log('FunBCall param:' + JSON.stringify(data.readString()));
+  router.pushUrl({
+    url: 'pages/FunB',
+  }).then(() => {
+    console.info('Succeeded in jumping to the FunB page.')
+  }).catch((err) => {
+    console.error(`Failed to jump to the FunB page.Code is ${err.code}, message is ${err.message}`)
+  })
+  return null;
+}
 
 export default class CameraAbility extends UIAbility {
   // 如果UIAbility第一次启动，在收到Router事件后会触发onCreate生命周期回调
@@ -15,6 +41,15 @@ export default class CameraAbility extends UIAbility {
       let params = JSON.parse(want.parameters.params);
       console.info("onCreate router targetPage:" + params.targetPage);
       selectPage = params.targetPage;
+    }
+
+    // 如果UIAbility第一次启动，在收到call事件后会触发onCreate生命周期回调
+    try {
+      // 监听call事件所需的方法
+      this.callee.on('funA', FunACall);
+      this.callee.on('funB', FunBCall);
+    } catch (error) {
+      console.log('register failed with error. Cause: ' + JSON.stringify(error));
     }
   }
 
@@ -31,8 +66,15 @@ export default class CameraAbility extends UIAbility {
     }
   }
 
+  // 进程退出时，解除监听
   onDestroy() {
     hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');
+    try {
+      this.callee.off('funA');
+      this.callee.off('funB');
+    } catch (error) {
+      console.log('unregister failed with error. Cause: ' + JSON.stringify(error));
+    }
   }
 
   onWindowStageCreate(windowStage: window.WindowStage) {
