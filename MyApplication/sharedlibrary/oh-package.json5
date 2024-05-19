@@ -1,12 +1,10 @@
 {
-  "name": "entry",
+  "name": "sharedlibrary",
   "version": "1.0.0",
   "description": "Please describe the basic information.",
-  "main": "",
+  "main": "./src/main/ets/Index.ets",
   "author": "",
-  "license": "",
+  "license": "Apache-2.0",
   "dependencies": {
-    "sharedlibrary":"file:../sharedlibrary"
   }
 }
-

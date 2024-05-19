@@ -22,6 +22,18 @@
           ]
         }
       ]
+    },
+    {
+      "name": "sharedlibrary",
+      "srcPath": "./sharedlibrary",
+      "targets": [
+        {
+          "name": "default",
+          "applyToProducts": [
+            "default"
+          ]
+        }
+      ]
     }
   ]
 }

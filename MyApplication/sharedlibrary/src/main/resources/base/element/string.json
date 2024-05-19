@@ -1,0 +1,24 @@
+{
+  "string": [
+    {
+      "name": "shared_desc",
+      "value": "description"
+    },
+    {
+      "name": "library_title",
+      "value": "myTitleBar"
+    },
+    {
+      "name": "add",
+      "value": "添加"
+    },
+    {
+      "name": "get_string_value",
+      "value": "获取字符串值"
+    },
+    {
+      "name": "native_multi",
+      "value": "native_multi"
+    }
+  ]
+}
