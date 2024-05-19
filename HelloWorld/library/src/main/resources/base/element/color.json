@@ -1,0 +1,16 @@
+{
+  "color": [
+    {
+      "name": "color_1",
+      "value": "#ff0000"
+    },
+    {
+      "name": "text_color",
+      "value": "#555555"
+    },
+    {
+      "name": "page_background",
+      "value": "#777777"
+    }
+  ]
+}

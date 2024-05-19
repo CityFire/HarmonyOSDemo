@@ -1,16 +1,30 @@
 @Component
 export struct MainPage {
-  @State message: string = 'Hello World'
+  @State message: string = 'HAR MainPage'
 
   build() {
-    Row() {
-      Column() {
+    Column() {
+      Row() {
         Text(this.message)
-          .fontSize(50)
+          .fontSize(32)
           .fontWeight(FontWeight.Bold)
       }
-      .width('100%')
+      .margin({ top: '32px' })
+      .height(56)
+      .width('624px')
+
+      Flex({ justifyContent: FlexAlign.Center, alignItems: ItemAlign.Center, alignContent: FlexAlign.Center }) {
+        Column() {
+          Image($r('app.media.pic_empty')).width('33%')
+          Text($r('app.string.empty'))
+            .fontSize(14)
+            .fontColor($r('app.color.text_color'))
+        }
+      }.width('100%')
+      .height('90%')
     }
+    .width('100%')
     .height('100%')
+    .backgroundColor($r('app.color.page_background'))
   }
 }

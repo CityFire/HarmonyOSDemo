@@ -5,5 +5,13 @@
   "main": "index.ets",
   "author": "",
   "license": "Apache-2.0",
-  "dependencies": {}
+  "dependencies": {
+    "@ohos/lottie": "^2.0.0"
+  },
+  "hooks": {
+    "preInstall": "echo 00 preInstall", // install命令执行之前
+    "postInstall": "echo 00 postInstall", // install命令执行之后
+    "preUninstall": "echo 00 preUninstall", // uninstall命令执行之前
+    "postUninstall": "echo 00 postUninstall"  // uninstall命令执行之后
+  }
 }

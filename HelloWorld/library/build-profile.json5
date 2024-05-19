@@ -1,6 +1,8 @@
 {
   "apiType": "stageMode",
   "buildOption": {
+//    "artifactType": "original", // original表示不使用混淆模式
+    "artifactType": "obfuscation", // 定义产物类型，obfuscation表示为使用混淆模式  如需将闭源包转换为开源包，请将模块级build-profile.json5中“artifactType”字段值改为“original”或直接删除（缺省为original）
   },
   "targets": [
     {
