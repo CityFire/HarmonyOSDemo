@@ -472,6 +472,193 @@ struct CountDownComponent {
   }
 }
 
+class C {
+  // 构造函数重载签名
+  constructor(x: number)  // 第一个签名
+  constructor(x: string)  // 第二个签名
+  constructor(x: number | string) { // 实现签名
+  }
+
+  // 方法重载签名
+  foo(x: number): void // 第一个签名
+  foo(x: string): void // 第二个签名
+  foo(x: number | string): void { // 实现签名
+
+  }
+}
+
+let c1 = new C(123);   // OK，使用第一个签名
+let c2 = new C('abc'); // OK，使用第二个签名
+let c = new C(123);
+c.foo(123);
+c.foo('aa');
+
+let map: Record<string, number> = {
+  'John': 25,
+  'Mary': 21,
+}
+
+map['John']; // 25
+
+interface PersonInfo {
+  age: number
+  salary: number
+}
+let map2: Record<string, PersonInfo> = {
+  'John': { age: 25, salary: 10},
+  'Mary': { age: 21, salary: 20}
+}
+
+interface Style {
+  color: string // 属性
+  // 等价 属性字段只是getter/setter对的便捷写法
+  // get color(): string
+  // set color(x: string)
+}
+
+class StyledRectangle implements Style {
+  // color: string = ''
+  // 等价
+  private _color: string = ''
+  get color(): string { return this._color; }
+  set color(x: string) { this._color = x; }
+}
+
+// 接口可以继承其他接口
+interface ExtendedStyle extends Style {
+  width: number
+}
+
+interface AreaSize {
+  calculateAreaSize(): number // 方法的声明
+  someMethod(): void;     // 方法的声明
+}
+
+// 接口：
+interface AreaSize {
+  calculateAreaSize(): number // 方法的声明
+  someMethod(): void;     // 方法的声明
+}
+
+// 实现：
+class RectangleSize implements AreaSize {
+  private width: number = 0
+  private height: number = 0
+  someMethod(): void {
+    console.log('someMethod called');
+  }
+  calculateAreaSize(): number {
+    this.someMethod(); // 调用另一个方法并返回结果
+    return this.width * this.height;
+  }
+}
+
+// 泛型
+class CustomStack<Element> {
+  public push(e: Element):void {
+
+  }
+}
+
+let s = new CustomStack<string>();
+s.push('hello');
+
+// 泛型类型的类型参数可以绑定。例如，HashMap<Key, Value>容器中的Key类型参数必须具有哈希方法，即它应该是可哈希的。
+interface Hashable {
+  hash(): number
+}
+class HasMap<Key extends Hashable, Value> {
+  public set(k: Key, v: Value) {
+    let h = k.hash();
+    // Key类型扩展了Hashable，Hashable接口的所有方法都可以为key调用。
+  }
+}
+
+// function last(x: number[]): number {
+//   return x[x.length - 1];
+// }
+// last([1, 2, 3]); // 3
+
+function last<T>(x: T[]): T {
+  return x[x.length - 1]
+}
+
+// 显式设置的类型实参
+last<string>(['aa', 'bb']);
+last<number>([1, 2, 3]);
+
+// 隐式设置的类型实参
+// 编译器根据调用参数的类型来确定类型实参
+last([1, 2, 3]);
+
+class SomeType {}
+interface Interface <T1 = SomeType> { }
+class Base <T2 = SomeType> { }
+class Derived1 extends Base implements Interface { }
+// Derived1在语义上等价于Derived2
+class Derived2 extends Base<SomeType> implements Interface<SomeType> { }
+
+function foo<T = number>(): T {
+  // ...
+  return foo();
+}
+foo();
+// 此函数在语义上等价于下面的调用
+foo<number>();
+
+// 空安全 类似Dart语言
+// 可以为空值的变量定义为联合类型T | null
+let x: number | null = null;
+x = 1;
+x = null;
+if (x != null) { }
+
+let z: number[] = null;
+
+
+class C2 {
+  value: number | null = 1;
+}
+
+let c22 = new C2();
+let y: number;
+y = c22.value + 1;  // 编译时错误：无法对可空值作做加法
+y = c22.value! + 1; // ok，值为2
+
+// 类似Swift语言  a ?? b等价于三元运算符(a != null && a != undefined) ? a : b。
+
+class Person {
+  // ...
+  nick: string | null = null
+  spouse?: Person
+  getNick(): string {
+    return this.nick ?? '';
+  }
+
+  setSpouse(spouse: Person): void {
+    this.spouse = spouse;
+  }
+
+  getSpouseNick(): string | null | undefined {
+    return this.spouse?.nick;
+  }
+
+  constructor(nick: string) {
+    this.nick = nick;
+    this.spouse = undefined;
+  }
+}
+
+let p: Person = new Person('Alice');
+p.spouse?.nick; // undefined
+
+// 动态导入
+// let modulePath = prompt("Which module to load?");
+// import(modulePath)
+// .then(obj => <module object>)
+// .catch(err => <loading error, e.g. if no such module>)
+
+
 @Component
 struct ReaderComp {
   @Prop title: string;
