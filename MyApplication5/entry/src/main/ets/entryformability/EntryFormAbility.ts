@@ -3,9 +3,12 @@ import formBindingData from '@ohos.app.form.formBindingData';
 import FormExtensionAbility from '@ohos.app.form.FormExtensionAbility';
 import formProvider from '@ohos.app.form.formProvider';
 import data from '@ohos.telephony.data';
+import fs from '@ohos.file.fs';
+import request from '@ohos.request';
 
 export default class EntryFormAbility extends FormExtensionAbility {
   // 卡片提供方接收创建卡片的通知接口
+  // 在添加卡片时，打开一个本地图片并将图片内容传递给卡片页面显示
   onAddForm(want) {
     console.log('FormExtensionAbility onAddForm, want:' + want.abilityName);
     // 在入参want中可以取出卡片的唯一标识：formId
@@ -25,6 +28,26 @@ export default class EntryFormAbility extends FormExtensionAbility {
     };
     return formBindingData.createFormBindingData(formData);
     */
+
+    // 假设在当前卡片应用的tmp目录下有一个本地图片：head.PNG
+    let tempDir = this.context.getApplicationContext().tempDir;
+    // 打开本地图片并获取其打开后的fd
+    let file;
+    try {
+      file = fs.openSync(tempDir + '/' + 'head.PNG');
+    } catch (e) {
+      console.error(`openSync failed: ${JSON.stringify(e)}`);
+    }
+    let formData = {
+      'text': 'Image: Bear',
+      'imgName': 'imgBear',
+      'formImages': {
+        'imgBear': file.fd
+      },
+      'loaded': true
+    }
+    // 将fd封装在formData中并返回至卡片页面
+    return formBindingData.createFormBindingData(formData);
   }
 
   // 卡片提供方接收临时卡片转常态卡片的通知接口
@@ -76,6 +99,7 @@ export default class EntryFormAbility extends FormExtensionAbility {
   }
 
   // 卡片提供方接收处理卡片事件的通知接口
+  // 在卡片页面触发message事件时，下载一个网络图片，并将网络图片内容传递给卡片页面显示
   onFormEvent(formId, message) { // 请求触发事件的卡片标识
     // Called when a specified message event defined by the form provider is triggered.
     // 若卡片支持触发事件，则需要重写该方法并实现对事件的触发
@@ -91,6 +115,47 @@ export default class EntryFormAbility extends FormExtensionAbility {
     }).catch((error) => {
       console.error('FormAbility updateForm failed: ' + JSON.stringify(error));
     })
+    // 注意：FormExtensionAbility在触发生命周期回调时被拉起，仅能在后台存在5秒
+    // 建议下载能快速下载完成的小文件，如在5秒内未下载完成，则此次网络图片无法刷新至卡片页面上
+    let netFile = 'https://xxxx/xxxx.png'; // 需要在此处使用真实的网络图片下载链接
+    let tempDir = this.context.getApplicationContext().tempDir;
+    let tmpFile = tempDir + '/file' + Date.now();
+    request.downloadFile(this.context, {
+      url: netFile, filePath: tmpFile
+    }).then((task) => {
+      task.on('complete', function callback() {
+        console.info('ArkTSCard download complete:' + tmpFile);
+        let file;
+        try {
+          file = fs.openSync(tmpFile);
+        } catch (e) {
+          console.error(`openSync failed: ${JSON.stringify(e)}`);
+        }
+        let formData = {
+          'text': 'Image: Https',
+          'imgName': 'imgHttps',
+          'formImages': {
+            'imgHttps': file.fd
+          },
+          'loaded': true
+        }
+        let formInfo = formBindingData.createFormBindingData(formData)
+        formProvider.updateForm(formId, formInfo).then((data) => {
+          console.info('FormAbility updateForm success.' + JSON.stringify(data));
+        }).catch((error) => {
+          console.error('FormAbility updateForm failed: ' + JSON.stringify(error));
+        })
+      })
+      task.on('fail', function callBack(err) {
+        console.info('ArkTSCard download task failed. Cause:' + err);
+        let formInfo = formBindingData.createFormBindingData({
+          'text': '刷新失败'
+        })
+        formProvider.updateForm(formId, formInfo)
+      });
+    }).catch((err) => {
+      console.error('Failed to request the download. Cause: ' + JSON.stringify(err));
+    });
   }
 
   // 卡片提供方接收销毁卡片的通知接口

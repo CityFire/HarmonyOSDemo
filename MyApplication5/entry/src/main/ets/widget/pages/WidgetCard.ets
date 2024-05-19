@@ -39,6 +39,15 @@ struct WidgetCard {
 
   @LocalStorageProp('formId') formId: string = '0';
 
+  @LocalStorageProp('text') text: string = '加载中...';
+  @LocalStorageProp('loaded') loaded: boolean = false;
+  @LocalStorageProp('imgName') imgName: string = 'name';
+
+  @LocalStorageProp('textA') textA: string = '待刷新...';
+  @LocalStorageProp('textB') textB: string = '待刷新...';
+  @State selectA: boolean = false;
+  @State selectB: boolean = false;
+
   /*
   build() {
 
@@ -93,6 +102,50 @@ struct WidgetCard {
   // }
 
   build() {
+
+    Column() {
+      Row() {
+        Checkbox({ name: 'checkbox1', group: 'checkboxGroup' })
+          .select(false)
+          .onChange((value: boolean) => {
+            this.selectA = value;
+            postCardAction(this, {
+              'action': 'message',
+              'params': {
+                'selectA': JSON.stringify(value)
+              }
+            });
+          })
+        Text('状态A')
+      }
+
+      Row() {
+        Checkbox({ name: 'checkbox2', group: 'checkboxGroup' })
+          .select(false)
+          .onChange((value: boolean) => {
+            this.selectB = value;
+            postCardAction(this, {
+              'action': 'message',
+              'params': {
+                'selectB': JSON.stringify(value)
+              }
+            });
+          })
+        Text('状态B')
+      }
+
+      Row() { // 选中状态A才会进行刷新的内容
+        Text('状态A: ')
+        Text(this.textA)
+      }
+
+      Row() { // 选中状态B才会进行刷新的内容
+        Text('状态B: ')
+        Text(this.textB)
+      }
+    }.padding('10%')
+  }
+  /*
     Column() {
       Button('功能A')
         .margin(2)
@@ -135,6 +188,21 @@ struct WidgetCard {
           });
         })
       Text(`${this.detail}`).margin(2)
+
+      Row() {
+        if (this.loaded) {
+          Image('memory://' + this.imgName)
+            .width('50%')
+            .height('50%')
+            .margin('5%')
+        } else {
+          Image('common/start.PNG')
+            .width('50%')
+            .height('50%')
+            .margin('5%')
+        }
+      }.alignItems(VerticalAlign.Center)
+      .justifyContent(FlexAlign.Center)
 
       Button('刷新')
         .onClick(() => {
@@ -192,4 +260,5 @@ struct WidgetCard {
     .width('100%')
     .height('100%')
   }
+  * */
 }

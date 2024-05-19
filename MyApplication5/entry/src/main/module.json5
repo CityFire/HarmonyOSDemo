@@ -65,6 +65,28 @@
           }
         ]
       }
+    ],
+    "requestPermissions":[
+      {
+        "name" : "ohos.permission.INTERNET",
+        "reason": "$string:reason",
+        "usedScene": {
+          "abilities": [
+            "EntryFormAbility"
+          ],
+          "when":"inuse"
+        }
+      },
+      {
+        "name" : "ohos.permission.PERMISSION2",
+        "reason": "$string:reason",
+        "usedScene": {
+          "abilities": [
+            "EntryFormAbility"
+          ],
+          "when":"always"
+        }
+      }
     ]
   }
 }

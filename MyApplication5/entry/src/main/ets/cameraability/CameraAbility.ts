@@ -56,6 +56,24 @@ function FunDCall(data) {
   return null;
 }
 
+// 下次刷新：通过setFormNextRefreshTime接口指定卡片的下一次刷新时间（最短时间5分钟），例如，在接口调用的5分钟后刷新卡片内容。
+function refreshCard() {
+  let formId = '123456789'; // 实际业务场景需要使用正确的formId
+  try {
+    // 设置过5分钟后更新卡片内容
+    formProvider.setFormNextRefreshTime(formId, 5, (err, data) => {
+      if (err) {
+        console.error(`Failed to setFormNextRefreshTime. Code: ${err.code}, message: ${err.message}`);
+        return;
+      } else {
+        console.info('Succeeded in setFormNextRefreshTimeing.');
+      }
+    });
+  } catch (err) {
+    console.error(`Failed to setFormNextRefreshTime. Code: ${err.code}, message: ${err.message}`);
+  }
+}
+
 export default class CameraAbility extends UIAbility {
   // 如果UIAbility第一次启动，在收到Router事件后会触发onCreate生命周期回调
   onCreate(want, launchParam) {

@@ -35,6 +35,10 @@
     {
       "name": "CameraAbility_label",
       "value": "label"
+    },
+    {
+      "name": "reason",
+      "value": "需要网络访问权限"
     }
   ]
 }
