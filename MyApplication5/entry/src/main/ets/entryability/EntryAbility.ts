@@ -5,11 +5,72 @@ import AbilityConstant from '@ohos.app.ability.AbilityConstant';
 import Want from '@ohos.app.ability.Want';
 import AbilityStage from '@ohos.app.ability.AbilityStage';
 import Logger from '../Common/utils/Logger';
+import common from '@ohos.app.ability.common';
 
 const TAG: string = '[Example].[Entry].[EntryAbility]';
 
 let lifecycleId;
 let callbackId;
+
+let fileType = 'application/pdf';
+let fileName = 'TestFile.pdf';
+let fileFd = -1; // 需要获取被分享文件的FD
+let fileSize; // 需要获取被分享文件的大小
+
+/*
+{
+  "deviceId": "",
+  "bundleName": "com.example.myapplication",
+  "abilityName": "EntryAbility",
+  "moduleName": "entry",
+  "uri": "",
+  "type": "application/pdf",
+  "flags": 0,
+  "action": "ohos.want.action.sendData",
+  "parameters": {
+    "component.startup.newRules": true,
+    "keyFd": {
+      "type": "FD",
+      "value": 36
+    },
+  "mime-type": "application/pdf",
+  "moduleName": "entry",
+  "ohos.aafwk.param.callerPid": 3488,
+  "ohos.aafwk.param.callerToken": 537379209,
+  "ohos.aafwk.param.callerUid": 20010014
+},
+"entities": []
+}
+*/
+
+function implicitStartAbility() {
+  let context = getContext(this) as common.UIAbilityContext;
+  let wantInfo = {
+    // This action is used to implicitly match the application selctor.
+    action: 'ohos.want.action.select',
+    // This is the custom parameter in the first layer of want
+    // which is intended to add info to application selector.
+    parameters: {
+      // The MIME type of pdf
+      'ability.picker.type': fileType,
+      'ability.picker.fileNames': [fileName],
+      'ability.picker.fileSizes': [fileSize],
+      // This a nested want which will be directly send to the user selected application.
+      'ability.want.params.INTENT': {
+        'action': 'ohos.want.action.sendData',
+        'type': 'application/pdf',
+        'parameters': {
+          'keyFd': { 'type': 'FD', 'value': fileFd }
+        }
+      }
+    }
+  }
+  context.startAbility(wantInfo).then(() => {
+    // ...
+  }).catch((err) => {
+    // ...
+  })
+}
 
 export default class EntryAbility extends UIAbility {
   para:Record<string, number> = { 'PropA': 47 };
@@ -24,6 +85,43 @@ export default class EntryAbility extends UIAbility {
   func1(...data) {
     // 触发事件，完成相应的业务操作
     Logger.info(TAG, '1. ' + JSON.stringify(data));
+  }
+
+  // 显式
+  async explicitStartAbility() {
+    try {
+      // Explicit want with abilityName specified.
+      let want = {
+        deviceId: "",
+        bundleName: "com.example.myapplication",
+        abilityName: "calleeAbility"
+      };
+      let context = this.context;// getContext(this) as common.UIAbilityContext;
+      await context.startAbility(want);
+      console.info(`explicit start ability succeed`);
+    } catch (error) {
+      console.info(`explicit start ability failed with ${error.code}`);
+    }
+  }
+
+  // 隐式
+  async implicitStartAbility() {
+    try {
+      let want = {
+        // uncomment line below if wish to implicitly query only in the specific bundle.
+        // bundleName: "com.example.myapplication",
+        "action": "ohos.want.action.viewData",
+        // entities can be omitted.
+        "entities": [ "entity.system.browsable" ],
+        "uri": "https://www.test.com:8080/query/student",
+        "type": "text/plain"
+      }
+      let context = this.context;// getContext(this) as common.UIAbilityContext;
+      await context.startAbility(want)
+      console.info(`explicit start ability succeed`)
+    } catch (error) {
+      console.info(`explicit start ability failed with ${error.code}`)
+    }
   }
 
   onCreate(want, launchParam) {
@@ -54,6 +152,19 @@ export default class EntryAbility extends UIAbility {
     // 创建其他应用或其他Module的Context
     let moduleName2 = "module1";
     let context2 = this.context.createModuleContext(moduleName2);
+
+
+    // 隐式Want
+    // 使用隐式Want描述需要打开一个链接的请求，而不关心通过具体哪个应用打开，系统将匹配声明支持该请求的所有应用
+    let wantInfo = {
+      // uncomment line below if wish to implicitly query only in the specific bundle.
+      // bundleName: 'com.example.myapplication',
+      action: 'ohos.want.action.search',
+      // entities can be omitted
+      entities: [ 'entity.system.browsable' ],
+      uri: 'https://www.test.com:8080/query/student',
+      type: 'text/plain',
+    };
 
     // 获取eventHub
     let eventhub = this.context.eventHub;
@@ -211,7 +322,9 @@ export default class EntryAbility extends UIAbility {
   }
 }
 
-
+function getContext(arg0: any): import("../../../../../../../../Library/Huawei/Sdk/openharmony/9/ets/api/application/UIAbilityContext").default {
+throw new Error('Function not implemented.');
+}
 // export default class MyAbilityStage extends AbilityStage {
 //   onAcceptWant(want): string {
 //     // 在被调用方的AbilityStage中，针对启动模式为specified的UIAbility返回一个UIAbility实例对应的一个Key值
