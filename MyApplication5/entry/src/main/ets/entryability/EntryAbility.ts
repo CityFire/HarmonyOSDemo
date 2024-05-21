@@ -8,6 +8,9 @@ import Logger from '../Common/utils/Logger';
 
 const TAG: string = '[Example].[Entry].[EntryAbility]';
 
+let lifecycleId;
+let callbackId;
+
 export default class EntryAbility extends UIAbility {
   para:Record<string, number> = { 'PropA': 47 };
   storage: LocalStorage = new LocalStorage(this.para);
@@ -42,6 +45,60 @@ export default class EntryAbility extends UIAbility {
     globalThis.entryAbilityStr = 'AbilityA'; // AbilityA存放字符串“AbilityA”到globalThis
 
     globalThis.context = this.context; // AbilityA存放context到globalThis
+
+    let AbilityLifecycleCallback = {
+      onAbilityCreate(ability) {
+        console.log('AbilityLifecycleCallback onAbilityCreate ability:' + ability);
+      },
+      onWindowStageCreate(ability, windowStage) {
+        console.log('AbilityLifecycleCallback onWindowStageCreate ability:' + ability);
+        console.log('AbilityLifecycleCallback onWindowStageCreate windowStage:' + windowStage);
+      },
+      onWindowStageActive(ability, windowStage) {
+        console.log('AbilityLifecycleCallback onWindowStageActive ability:' + ability);
+        console.log('AbilityLifecycleCallback onWindowStageActive windowStage:' + windowStage);
+      },
+      onWindowStageInactive(ability, windowStage) {
+        console.log('AbilityLifecycleCallback onWindowStageInactive ability:' + ability);
+        console.log('AbilityLifecycleCallback onWindowStageInactive windowStage:' + windowStage);
+      },
+      onWindowStageDestroy(ability, windowStage) {
+        console.log('AbilityLifecycleCallback onWindowStageDestroy ability:' + ability);
+        console.log('AbilityLifecycleCallback onWindowStageDestroy windowStage:' + windowStage);
+      },
+      onAbilityDestroy(ability) {
+        console.log('AbilityLifecycleCallback onAbilityDestroy ability:' + ability);
+      },
+      onAbilityForeground(ability) {
+        console.log('AbilityLifecycleCallback onAbilityForeground ability:' + ability);
+      },
+      onAbilityBackground(ability) {
+        console.log('AbilityLifecycleCallback onAbilityBackground ability:' + ability);
+      },
+      onAbilityContinue(ability) {
+        console.log('AbilityLifecycleCallback onAbilityContinue ability:' + ability);
+      }
+    }
+    // 1.通过context属性获取applicationContext
+    let applicationContext = this.context.getApplicationContext();
+    // 2.通过applicationContext注册监听应用内生命周期
+    lifecycleId = applicationContext.on('abilityLifecycle', AbilityLifecycleCallback);
+    console.log('registerAbilityLifecycleCallback number: ' + JSON.stringify(lifecycleId));
+
+    globalThis.applicationContext = this.context.getApplicationContext();
+    let environmentCallback = {
+      onConfigurationUpdated(config){
+        console.log('onConfigurationUpdated config:' + JSON.stringify(config));
+      },
+      onMemoryLevel(level){
+        console.log('onMemoryLevel level:' + level);
+      }
+    }
+    // 1.获取applicationContext
+    let applicationContext1 = globalThis.applicationContext;
+    // 2.通过applicationContext注册监听应用内生命周期
+    callbackId = applicationContext1.on('environment', environmentCallback);
+    console.log('registerEnvironmentCallback callbackId: ${callbackId}');
   }
 
   onDestroy() {
@@ -52,6 +109,24 @@ export default class EntryAbility extends UIAbility {
     } catch (error) {
       console.log('emit failed with error. Cause: ' + JSON.stringify(error));
     }
+
+    let applicationContext = this.context.getApplicationContext();
+    console.log('stage applicationContext: ' + applicationContext);
+    applicationContext.off('abilityLifecycle', lifecycleId, (error, data) => {
+      console.log('unregisterAbilityLifecycleCallback success, err: ' + JSON.stringify(error));
+    });
+
+    // applicationContext.off('environment', callbackId);
+    applicationContext.off('environment', callbackId, (error, data) => {
+      console.log('unregisterEnvironmentCallback success, err: ' + JSON.stringify(error));
+    });
+
+    applicationContext.killAllProcesses();
+    // applicationContext.killProcessesBySelf().then((data) => {
+    //   console.log('The process running information is:' + JSON.stringify(data));
+    // }).catch((error) => {
+    //   console.error('error:' + JSON.stringify(error));
+    // });
   }
 
   onWindowStageCreate(windowStage: window.WindowStage) {
