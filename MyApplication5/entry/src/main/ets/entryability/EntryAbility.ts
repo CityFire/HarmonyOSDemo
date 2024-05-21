@@ -31,6 +31,30 @@ export default class EntryAbility extends UIAbility {
     Logger.info(TAG, 'Ability onCreate');
     AppStorage.SetOrCreate('abilityWant', want);
 
+    let cacheDir = this.context.cacheDir;
+    let tempDir = this.context.tempDir;
+    let filesDir = this.context.filesDir;
+    let databaseDir = this.context.databaseDir;
+    let bundleCodeDir = this.context.bundleCodeDir;
+    let distributedFilesDir = this.context.distributedFilesDir;
+    let preferencesDir = this.context.preferencesDir;
+
+    // 存储普通信息前，切换到EL1设备级加密
+    if (this.context.area === 1) { // 获取area
+      this.context.area = 0;     // 修改area
+    }
+    // 存储普通信息
+
+    // 存储敏感信息前，切换到EL2用户级加密
+    if (this.context.area === 0) { // 获取area
+      this.context.area = 1;     // 修改area
+    }
+    // 存储敏感信息
+
+    // 创建其他应用或其他Module的Context
+    let moduleName2 = "module1";
+    let context2 = this.context.createModuleContext(moduleName2);
+
     // 获取eventHub
     let eventhub = this.context.eventHub;
     // 执行订阅操作
