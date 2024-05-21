@@ -5,6 +5,7 @@ import formProvider from '@ohos.app.form.formProvider';
 import data from '@ohos.telephony.data';
 import fs from '@ohos.file.fs';
 import request from '@ohos.request';
+import dataStorage from '@ohos.data.storage';
 
 export default class EntryFormAbility extends FormExtensionAbility {
   // 卡片提供方接收创建卡片的通知接口
@@ -12,12 +13,26 @@ export default class EntryFormAbility extends FormExtensionAbility {
   onAddForm(want) {
     console.log('FormExtensionAbility onAddForm, want:' + want.abilityName);
     // 在入参want中可以取出卡片的唯一标识：formId
-    let formId = want.parameters["ohos.extra.param.key.form_identity"];
-    let dataObj1 = {
-      "formId": formId
-    };
-    let obj1 = formBindingData.createFormBindingData(dataObj1);
-    return obj1;
+
+    let formId = want.parameters[formInfo.FormParam.IDENTITY_KEY];
+    let isTempCard: boolean = want.parameters[formInfo.FormParam.TEMPORARY_KEY];
+    if (isTempCard === false) { // 如果为常态卡片，直接进行信息持久化
+      console.info('Not temp card, init db for:' + formId);
+      let storeDB = dataStorage.getStorageSync(this.context.filesDir + 'myStore')
+      storeDB.putSync('A' + formId, 'false');
+      storeDB.putSync('B' + formId, 'false');
+      storeDB.flushSync();
+    }
+    let dataObj1 = {};
+    return formBindingData.createFormBindingData(dataObj1);
+
+    // let formId = want.parameters["ohos.extra.param.key.form_identity"];
+    // let dataObj1 = {
+    //   "formId": formId
+    // };
+    // let obj1 = formBindingData.createFormBindingData(dataObj1);
+    // return obj1;
+
     /*
     let formId: string = want.parameters[formInfo.FormParam.IDENTITY_KEY];
     // 使用方创建卡片时触发，提供方需要返回卡片数据绑定类
@@ -56,6 +71,11 @@ export default class EntryFormAbility extends FormExtensionAbility {
     // converted to a normal form.
     // 使用方将临时卡片转换为常态卡片触发，提供方需要做相应的处理
     console.log('FormExtensionAbility onCastToNormalForm, formId:' + formId);
+    // 如果在添加时为临时卡片，则建议转为常态卡片时进行信息持久化
+    let storeDB = dataStorage.getStorageSync(this.context.filesDir + 'myStore')
+    storeDB.putSync('A' + formId, 'false');
+    storeDB.putSync('B' + formId, 'false');
+    storeDB.flushSync();
   }
 
   // 卡片提供方接收更新卡片的通知接口。获取最新数据后调用formProvider的updateForm接口刷新卡片数据。
@@ -76,6 +96,24 @@ export default class EntryFormAbility extends FormExtensionAbility {
         return;
       }
     });
+
+    let storeDB = dataStorage.getStorageSync(this.context.filesDir + 'myStore')
+    let stateA = storeDB.getSync('A' + formId, 'false').toString()
+    let stateB = storeDB.getSync('B' + formId, 'false').toString()
+    // A状态选中则更新textA
+    if (stateA === 'true') {
+      let formInfo = formBindingData.createFormBindingData({
+        'textA': 'AAA'
+      })
+      formProvider.updateForm(formId, formInfo)
+    }
+    // B状态选中则更新textB
+    if (stateB === 'true') {
+      let formInfo = formBindingData.createFormBindingData({
+        'textB': 'BBB'
+      })
+      formProvider.updateForm(formId, formInfo)
+    }
   }
 
   // 卡片提供方接收修改可见性的通知接口
@@ -156,6 +194,18 @@ export default class EntryFormAbility extends FormExtensionAbility {
     }).catch((err) => {
       console.error('Failed to request the download. Cause: ' + JSON.stringify(err));
     });
+
+    let storeDB = dataStorage.getStorageSync(this.context.filesDir + 'myStore')
+    let msg = JSON.parse(message)
+    if (msg.selectA != undefined) {
+      console.info('onFormEvent selectA info:' + msg.selectA);
+      storeDB.putSync('A' + formId, msg.selectA);
+    }
+    if (msg.selectB != undefined) {
+      console.info('onFormEvent selectB info:' + msg.selectB);
+      storeDB.putSync('B' + formId, msg.selectB);
+    }
+    storeDB.flushSync();
   }
 
   // 卡片提供方接收销毁卡片的通知接口
@@ -163,6 +213,10 @@ export default class EntryFormAbility extends FormExtensionAbility {
     // Called to notify the form provider that a specified form has been destroyed.
     // 当对应的卡片删除时触发的回调，入参是被删除的卡片ID
     console.log('FormExtensionAbility onRemoveForm, formId:' + formId);
+
+    let storeDB = dataStorage.getStorageSync(this.context.filesDir + 'myStore')
+    storeDB.deleteSync('A' + formId);
+    storeDB.deleteSync('B' + formId);
   }
 
   // 当系统配置更新时调用
