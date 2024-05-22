@@ -2,6 +2,11 @@
   "apiType": 'stageMode',
   "buildOption": {
     // "artifactType": "obfuscation" // original
+    "sourceOption": {
+      "workers": [
+        "./src/main/ets/workers/worker.ets",
+      ]
+    }
   },
   "targets": [
     {

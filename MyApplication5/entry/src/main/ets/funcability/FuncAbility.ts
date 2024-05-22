@@ -2,6 +2,8 @@ import UIAbility from '@ohos.app.ability.UIAbility';
 import hilog from '@ohos.hilog';
 import window from '@ohos.window';
 import fileIO from '@ohos.fileio';
+import commonEventManager from '@ohos.commonEventManager';
+import emitter from '@ohos.events.emitter';
 
 let path = '';
 let fileType = 'application/pdf';
@@ -63,6 +65,66 @@ export default class FuncAbility extends UIAbility {
       let fd = want["parameters"]["keyFd"].value;
       // ...
     }
+
+    // 用于保存创建成功的订阅者对象，后续使用其完成订阅及退订的动作
+    // let subscriber: commonEventManager.CommonEventSubscriber | null = null;
+    // 订阅者信息
+    // let subscribeInfo: commonEventManager.CommonEventSubscribeInfo = {
+    //   events: ["usual.event.SCREEN_OFF"], // 订阅灭屏公共事件
+    // }
+
+    // 创建订阅者回调
+    // commonEventManager.createSubscriber(subscribeInfo, (err: Base.BusinessError, data: commonEventManager.CommonEventSubscriber) => {
+    //   if (err) {
+    //     console.error(`Failed to create subscriber. Code is ${err.code}, message is ${err.message}`);
+    //     return;
+    //   }
+    //   console.info('Succeeded in creating subscriber.');
+    //   subscriber = data;
+    //   // 订阅公共事件回调
+    // })
+
+    // 订阅公共事件回调
+    // if (subscriber !== null) {
+    //   commonEventManager.subscribe(subscriber, (err: Base.BusinessError, data: commonEventManager.CommonEventData) => {
+    //     if (err) {
+    //       console.error(`Failed to subscribe common event. Code is ${err.code}, message is ${err.message}`);
+    //       return;
+    //     }
+    //   })
+    // } else {
+    //   console.error(`Need create subscriber`);
+    // }
+
+    // 定义一个eventId为1的事件
+    let event = {
+      eventId: 1
+    };
+
+    // 收到eventId为1的事件后执行该回调
+    let callback = (eventData) => {
+      console.info('event callback');
+    };
+
+    // 订阅eventId为1的事件
+    emitter.on(event, callback);
+
+    // 定义一个eventId为1的事件，事件优先级为Low
+    let event2 = {
+      eventId: 1,
+      priority: emitter.EventPriority.LOW
+    };
+
+    let eventData = {
+      data: {
+        "content": "c",
+        "id": 1,
+        "isEmpty": false,
+      }
+    };
+
+    // 发送eventId为1的事件，事件内容为eventData
+    emitter.emit(event2, eventData);
 
   }
 

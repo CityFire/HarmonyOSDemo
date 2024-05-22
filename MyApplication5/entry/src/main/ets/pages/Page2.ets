@@ -1,4 +1,17 @@
 import router from '@ohos.router';
+import worker from '@ohos.worker';
+
+let wk = new worker.ThreadWorker("entry/ets/workers/worker.ts");
+// 发送消息到worker线程
+wk.postMessage("message from main thread.")
+
+// 处理来自worker线程的消息
+wk.onmessage = function(message) {
+  console.info("message from worker: " + message)
+
+  // 根据业务按需停止worker线程
+  wk.terminate()
+}
 
 let storage = LocalStorage.GetShared()
 @Entry(storage)
