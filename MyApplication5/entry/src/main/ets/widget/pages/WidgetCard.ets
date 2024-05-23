@@ -117,9 +117,7 @@ struct WidgetCard {
             });
           })
         Text('状态A')
-      }
 
-      Row() {
         Checkbox({ name: 'checkbox2', group: 'checkboxGroup' })
           .select(false)
           .onChange((value: boolean) => {

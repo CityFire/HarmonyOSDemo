@@ -129,6 +129,7 @@ export default class EntryAbility extends UIAbility {
     Logger.info(TAG, 'Ability onCreate');
     AppStorage.SetOrCreate('abilityWant', want);
 
+    /*
     let cacheDir = this.context.cacheDir;
     let tempDir = this.context.tempDir;
     let filesDir = this.context.filesDir;
@@ -174,6 +175,7 @@ export default class EntryAbility extends UIAbility {
       // 触发事件，完成相应的业务操作
       Logger.info(TAG, '2. ' + JSON.stringify(data));
     });
+    */
 
     globalThis.entryAblityWant = want;
 
@@ -181,6 +183,7 @@ export default class EntryAbility extends UIAbility {
 
     globalThis.context = this.context; // AbilityA存放context到globalThis
 
+    /*
     let AbilityLifecycleCallback = {
       onAbilityCreate(ability) {
         console.log('AbilityLifecycleCallback onAbilityCreate ability:' + ability);
@@ -229,15 +232,18 @@ export default class EntryAbility extends UIAbility {
         console.log('onMemoryLevel level:' + level);
       }
     }
+
     // 1.获取applicationContext
     let applicationContext1 = globalThis.applicationContext;
     // 2.通过applicationContext注册监听应用内生命周期
     callbackId = applicationContext1.on('environment', environmentCallback);
     console.log('registerEnvironmentCallback callbackId: ${callbackId}');
+    */
   }
 
   onDestroy() {
     hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onDestroy');
+    /*
     // context为UIAbility实例的AbilityContext 调用eventHub.off()方法取消该事件的订阅
     try {
       this.context.eventHub.off('event1');
@@ -251,12 +257,14 @@ export default class EntryAbility extends UIAbility {
       console.log('unregisterAbilityLifecycleCallback success, err: ' + JSON.stringify(error));
     });
 
-    // applicationContext.off('environment', callbackId);
+    applicationContext.off('environment', callbackId);
     applicationContext.off('environment', callbackId, (error, data) => {
       console.log('unregisterEnvironmentCallback success, err: ' + JSON.stringify(error));
     });
+    */
 
-    applicationContext.killAllProcesses();
+    // applicationContext.killAllProcesses();
+
     // applicationContext.killProcessesBySelf().then((data) => {
     //   console.log('The process running information is:' + JSON.stringify(data));
     // }).catch((error) => {

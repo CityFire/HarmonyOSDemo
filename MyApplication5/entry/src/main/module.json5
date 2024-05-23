@@ -30,42 +30,42 @@
               "action.system.home"
             ]
           },
-          {
-            "entities": [
-              "entity.system.browsable"
-              // ...
-            ],
-            "actions": [
-              "ohos.want.action.viewData"
-              // ...
-            ],
-            "uris": [
-              {
-                "scheme": "https",
-                "host": "www.test.com",
-                "port": "8080",
-                // prefix matching
-                "pathStartWith": "query",
-                "type": "text/*"
-              },
-              {
-                "scheme": "http",
-                // ...
-              }
-              // ...
-            ],
-          },
-          {
-            "actions": [
-              "action.system.home",
-              "ohos.want.action.sendData"
-            ],
-            "uris": [
-              {
-                "type": "application/pdf"
-              },
-            ]
-          }
+//          {
+//            "entities": [
+//              "entity.system.browsable"
+//              // ...
+//            ],
+//            "actions": [
+//              "ohos.want.action.viewData"
+//              // ...
+//            ],
+//            "uris": [
+//              {
+//                "scheme": "https",
+//                "host": "www.test.com",
+//                "port": "8080",
+//                // prefix matching
+//                "pathStartWith": "query",
+//                "type": "text/*"
+//              },
+//              {
+//                "scheme": "http",
+//                // ...
+//              }
+//              // ...
+//            ],
+//          },
+//          {
+//            "actions": [
+//              "action.system.home",
+//              "ohos.want.action.sendData"
+//            ],
+//            "uris": [
+//              {
+//                "type": "application/pdf"
+//              },
+//            ]
+//          }
         ]
       },
       {
