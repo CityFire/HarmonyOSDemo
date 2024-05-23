@@ -114,6 +114,7 @@ struct Index {
       .margin({ bottom: 15 })
       .borderRadius(15)
     }.width('100%').height('55%').backgroundColor('#CFD0CF')
+
   }
 
   @Builder
@@ -204,6 +205,104 @@ struct Index {
     .width('90%')
     .padding(10)
     .backgroundColor(0xAFEEEE)
+  }
+
+  @Builder
+  FlexView_() {
+    Column() {
+      Column({ space: 5 }) {
+        Flex({ direction: FlexDirection.Row, wrap: FlexWrap.NoWrap, justifyContent: FlexAlign.SpaceBetween, alignItems: ItemAlign.Center }) {
+          Text('1').width('30%').height(50).backgroundColor(0xF5DEB3)
+          Text('2').width('30%').height(50).backgroundColor(0xD2B48C)
+          Text('3').width('30%').height(50).backgroundColor(0xF5DEB3)
+        }
+        .height(70)
+        .width('90%')
+        .backgroundColor(0xAFEEEE)
+      }.width('100%').margin({ top: 5 })
+    }.width('100%')
+  }
+
+  @Builder
+  FlexViewDemo() {
+    // 通过alignContent参数设置子组件各行在交叉轴剩余空间内的对齐方式，只在多行的flex布局中生效 FlexAlign.Start：子组件各行与交叉轴起点对齐。FlexAlign.SpaceEvenly: 子组件各行间距，子组件首尾行与交叉轴两端距离都相等。
+    Flex({ justifyContent: FlexAlign.SpaceBetween, wrap: FlexWrap.Wrap, alignContent: FlexAlign.Start }) {
+      Text('1').width('30%').height(20).backgroundColor(0xF5DEB3)
+      Text('2').width('60%').height(20).backgroundColor(0xD2B48C)
+      Text('3').width('40%').height(20).backgroundColor(0xD2B48C)
+      Text('4').width('30%').height(20).backgroundColor(0xF5DEB3)
+      Text('5').width('20%').height(20).backgroundColor(0xD2B48C)
+    }
+    .width('90%')
+    .height(100)
+    .backgroundColor(0xAFEEEE)
+
+    // flexBasis：设置子组件在父容器主轴方向上的基准尺寸。如果设置了该值，则子项占用的空间为设置的值；如果没设置该属性，那子项的空间为width/height的值。
+    Flex() {
+      Text('flexBasis("auto")')
+        .flexBasis('auto') // 未设置width以及flexBasis值为auto，内容自身宽度
+        .height(100)
+        .backgroundColor(0xF5DEB3)
+      Text('flexBasis("auto")' + ' width("40%")')
+        .width('40%')
+        .flexBasis('auto') //设置width以及flexBasis值auto，使用width的值
+        .height(100)
+        .backgroundColor(0xD2B48C)
+
+      Text('flexBasis(100)') // 未设置width以及flexBasis值为100，宽度为100vp
+        .fontSize(15)
+        .flexBasis(100)
+        .height(100)
+        .backgroundColor(0xF5DEB3)
+
+      Text('flexBasis(100)')
+        .fontSize(15)
+        .flexBasis(100)
+        .width(200) // flexBasis值为100，覆盖width的设置值，宽度为100vp
+        .height(100)
+        .backgroundColor(0xD2B48C)
+    }.width('90%').height(120).padding(10).backgroundColor(0xAFEEEE)
+
+    // flexGrow：设置父容器的剩余空间分配给此属性所在组件的比例。用于“瓜分”父组件的剩余空间。
+    Flex() {
+      Text('flexGrow(2)')
+        .flexGrow(2)
+        .width(100)
+        .height(100)
+        .backgroundColor(0xF5DEB3)
+
+      Text('flexGrow(3)')
+        .flexGrow(3)
+        .width(100)
+        .height(100)
+        .backgroundColor(0xD2B48C)
+
+      Text('no flexGrow')
+        .width(100)
+        .height(100)
+        .backgroundColor(0xF5DEB3)
+    }.width(420).height(120).padding(10).backgroundColor(0xAFEEEE)
+
+    // flexShrink: 当父容器空间不足时，子组件的压缩比例。
+    Flex({ direction: FlexDirection.Row }) {
+      Text('flexShrink(3)')
+        .fontSize(15)
+        .flexShrink(3)
+        .width(200)
+        .height(100)
+        .backgroundColor(0xF5DEB3)
+
+      Text('no flexShrink')
+        .width(200)
+        .height(100)
+        .backgroundColor(0xD2B48C)
+
+      Text('flexShrink(2)')
+        .flexShrink(2)
+        .width(200)
+        .height(100)
+        .backgroundColor(0xF5DEB3)
+    }.width(400).height(120).padding(10).backgroundColor(0xAFEEEE)
   }
 
   build() {
