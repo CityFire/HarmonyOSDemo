@@ -27,6 +27,10 @@ struct Index {
 
   private arr: string[] = ['APP1', 'APP2', 'APP3', 'APP4', 'APP5', 'APP6', 'APP7', 'APP8'];
 
+  // @State bgColors: Color[] = [Color.Red, Color.Orange, Color.Yellow, Color.Green, Color.Pink, Color.Grey, Color.Blue, Color.Brown, Color.Red, Color.Orange, Color.Yellow, Color.Green];
+  @State bgColors: Color[] = [Color.Red, Color.Orange, Color.Yellow, Color.Green, Color.Pink, Color.Grey, Color.Blue, Color.Brown];
+  @State currentBp: string = 'unknown';
+
   @Builder
   ListView() {
     List() {
@@ -392,6 +396,234 @@ struct Index {
       .border({ width: 2, color: '#6699FF' })
     }
     .height('100%').margin({ left: 30 })
+  }
+
+  @Builder
+  GridRowColView() {
+    GridRow({
+      breakpoints: {
+        value: ['200vp', '300vp', '400vp', '500vp', '600vp'],
+        reference: BreakpointsReference.WindowSize
+      }
+    }) {
+      ForEach(this.bgColors, (color, index) => {
+        GridCol({
+          span: {
+            xs: 2, // 在最小宽度类型设备上，栅格子组件占据的栅格容器2列。
+            sm: 3, // 在小宽度类型设备上，栅格子组件占据的栅格容器3列。
+            md: 4, // 在中等宽度类型设备上，栅格子组件占据的栅格容器4列。
+            lg: 6, // 在大宽度类型设备上，栅格子组件占据的栅格容器6列。
+            xl: 8, // 在特大宽度类型设备上，栅格子组件占据的栅格容器8列。
+            xxl: 12 // 在超大宽度类型设备上，栅格子组件占据的栅格容器12列。
+          }
+        }) {
+          Row() {
+            Text(`${index}`)
+          }.width("100%").height('50vp')
+        }.backgroundColor(color)
+      })
+    }
+  }
+
+  @Builder
+  GridRowColView_() {
+    GridRow() {
+      ForEach(this.bgColors, (color, index) => {
+        GridCol() {
+          Row() {
+            Text(`${index + 1}`)
+          }.width('100%').height('50')
+        }.backgroundColor(color)
+      })
+    }
+  }
+
+  @Builder
+  GridRowColView__() {
+    Row() {
+      GridRow({ columns: 4 }) {
+        ForEach(this.bgColors, (color, index) => {
+          GridCol() {
+            Row() {
+              Text(`${index + 1}`)
+            }.width('100%').height('50')
+          }.backgroundColor(color)
+        })
+      }
+      .width('100%').height('100%')
+      .onBreakpointChange((breakpoint) => {
+        this.currentBp = breakpoint
+      })
+    }
+    .height(160)
+    .border({ color: Color.Blue, width: 2 })
+    .width('90%')
+
+    Row() {
+      GridRow({ columns: 8 }) {
+        ForEach(this.bgColors, (color, index) => {
+          GridCol({ span: 2 }) {
+            Row() {
+              Text(`${index + 1}`)
+            }.width('100%').height('50vp')
+          }.backgroundColor(color)
+        })
+      }
+      .width('100%').height('100%')
+      .onBreakpointChange((breakpoint) => {
+        this.currentBp = breakpoint
+      })
+    }
+    .height(160)
+    .border({ color: Color.Blue, width: 2 })
+    .width('90%')
+
+    GridRow({ columns: { sm: 4, md: 8 }, breakpoints: { value: ['200vp', '300vp', '400vp', '500vp', '600vp'] } }) {
+      ForEach(this.bgColors, (item, index) => {
+        GridCol() {
+          Row() {
+            Text(`${index + 1}`)
+          }.width('100%').height('50')
+        }.backgroundColor(item)
+
+        // 占用列数
+        GridCol({ span: 2 }){}
+        GridCol({ span: { xs: 1, sm: 2, md: 3, lg: 4 } }){}
+        GridCol(){}.span(2)
+        GridCol(){}.span({ xs: 1, sm: 2, md: 3, lg: 4 })
+
+        // 偏移列数
+        GridCol({ offset: 2 }){}
+        GridCol({ offset: { xs: 2, sm: 2, md: 2, lg: 2 } }){}
+        GridCol(){}.offset(2)
+        // GridCol(){}.offset({ xs: 1, sm: 2, md: 3, lg: 4 })
+
+        // 元素序号
+        GridCol({ order: 2 }){}
+        GridCol({ order: { xs: 1, sm: 2, md: 3, lg: 4 } }){}
+        GridCol(){}.order(2)
+        GridCol(){}.order({ xs: 1, sm: 2, md: 3, lg: 4 })
+
+      })
+    }
+
+    GridRow({ direction: GridRowDirection.Row }){}
+    GridRow({ gutter: 10 }){}
+    GridRow({ gutter: { x: 20, y: 50 } }){}
+
+    // 当类型为GridColColumnOption时，支持六种不同尺寸（xs, sm, md, lg, xl, xxl）设备中子组件所占列数设置,各个尺寸下数值可不同。
+    GridRow({ columns: 8 }) {
+      ForEach(this.bgColors, (color, index) => {
+        GridCol({ span: { xs: 1, sm: 2, md: 3, lg: 4 } }) {
+          Row() {
+            Text(`${index}`)
+          }.width('100%').height('50vp')
+        }
+        .backgroundColor(color)
+      })
+    }
+
+    // 当类型为number时，子组件偏移相同列数。
+    GridRow() {
+      ForEach(this.bgColors, (color, index) => {
+        GridCol({ offset: 2 }) {
+          Row() {
+            Text('' + index)
+          }.width('100%').height('50vp')
+        }
+        .backgroundColor(color)
+      })
+    }
+
+    GridRow() {
+      ForEach(this.bgColors, (color, index) => {
+        GridCol({ offset: { xs: 1, sm: 2, md: 3, lg: 4 } }) {
+          Row() {
+            Text('' + index)
+          }.width('100%').height('50vp')
+        }
+        .backgroundColor(color)
+      })
+    }
+
+    GridRow() {
+      GridCol({ order: 4 }) {
+        Row() {
+          Text('1')
+        }.width('100%').height('50vp')
+      }.backgroundColor(Color.Red)
+      GridCol({ order: 3 }) {
+        Row() {
+          Text('2')
+        }.width('100%').height('50vp')
+      }.backgroundColor(Color.Orange)
+      GridCol({ order: 2 }) {
+        Row() {
+          Text('3')
+        }.width('100%').height('50vp')
+      }.backgroundColor(Color.Yellow)
+      GridCol({ order: 1 }) {
+        Row() {
+          Text('4')
+        }.width('100%').height('50vp')
+      }.backgroundColor(Color.Green)
+    }
+
+    GridRow() {
+      GridCol({ order: { xs:1, sm:5, md:3, lg:7}}) {
+        Row() {
+          Text('1')
+        }.width('100%').height('50vp')
+      }.backgroundColor(Color.Red)
+      GridCol({ order: { xs:2, sm:2, md:6, lg:1} }) {
+        Row() {
+          Text('2')
+        }.width('100%').height('50vp')
+      }.backgroundColor(Color.Orange)
+      GridCol({ order: { xs:3, sm:3, md:1, lg:6} }) {
+        Row() {
+          Text('3')
+        }.width('100%').height('50vp')
+      }.backgroundColor(Color.Yellow)
+      GridCol({ order: { xs:4, sm:4, md:2, lg:5} }) {
+        Row() {
+          Text('4')
+        }.width('100%').height('50vp')
+      }.backgroundColor(Color.Green)
+    }
+  }
+
+  @Builder
+  __GridRowView() {
+    GridRow() {
+      GridCol({ span: { sm: 12 } }) {
+        GridRow() {
+          GridCol({ span: { sm: 2 } }) {
+            Row() {
+              Text('left').fontSize(24)
+            }
+            .justifyContent(FlexAlign.Center)
+            .height('90%')
+          }.backgroundColor('#ff41dbaa')
+
+          GridCol({ span: { sm: 10 } }) {
+            Row() {
+              Text('right').fontSize(24)
+            }
+            .justifyContent(FlexAlign.Center)
+            .height('90%')
+          }.backgroundColor('#ff4168db')
+        }
+        .backgroundColor('#19000000')
+        .height('100%')
+      }
+
+      GridCol({ span: { sm: 12 } }) {
+        Row() {
+          Text('footer').width('100%').textAlign(TextAlign.Center)
+        }.width('100%').height('10%').backgroundColor(Color.Pink)
+      }
+    }.width('100%').height(300)
   }
 
   build() {
