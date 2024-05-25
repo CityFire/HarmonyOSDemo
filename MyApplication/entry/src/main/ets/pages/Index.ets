@@ -2,6 +2,7 @@
 // 导入页面路由模块
 import router from '@ohos.router';
 import common from '@ohos.app.ability.common';
+import mediaquery from '@ohos.mediaquery';
 
 const TAG = 'Index';
 
@@ -30,6 +31,8 @@ struct Index {
   // @State bgColors: Color[] = [Color.Red, Color.Orange, Color.Yellow, Color.Green, Color.Pink, Color.Grey, Color.Blue, Color.Brown, Color.Red, Color.Orange, Color.Yellow, Color.Green];
   @State bgColors: Color[] = [Color.Red, Color.Orange, Color.Yellow, Color.Green, Color.Pink, Color.Grey, Color.Blue, Color.Brown];
   @State currentBp: string = 'unknown';
+
+  listener = mediaquery.matchMediaSync('(orientation: landscape)');
 
   @Builder
   ListView() {
@@ -626,6 +629,14 @@ struct Index {
     }.width('100%').height(300)
   }
 
+  onPortrait(mediaQueryResult) {
+    if (mediaQueryResult.matches) {
+
+    } else {
+
+    }
+  }
+
   build() {
     Row() {
       Column() {
@@ -635,6 +646,9 @@ struct Index {
         this.ButtionView()
 
         this.FlexView()
+
+
+        // this.listener.on('change', this.onPortrait.bind(this));
 
       }
     }
