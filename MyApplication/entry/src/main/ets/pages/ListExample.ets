@@ -195,18 +195,24 @@ struct MessageList {
     List() {
       ForEach(this.messages, (item, index) => {
         ListItem() {
+          if (index === 2) {
+            Row() {
+              Badge({
+                count: 1,
+                position: BadgePosition.RightTop,
+                style: { badgeSize: 16, badgeColor: '#FA2A2D' }
+              }) {
+                // Image组件实现消息联系人头像
+              }
+            }
+          } else {
 
+          }
         }
         .swipeAction({ end: this.itemEnd(index) }) // 设置侧滑属性
       }, item => item.id.toString())
     }
 
-    Badge({
-      count: 1,
-      position: BadgePosition.RightTop,
-      style: { badgeSize: 16, badgeColor: '#FA2A2D' }
-    }) {
-      // Image组件实现消息联系人头像
-    }
+
   }
 }
