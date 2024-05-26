@@ -1,4 +1,72 @@
 import util from '@ohos.util'
+
+@Entry
+@Component
+struct ListExample {
+  @State arr: number[] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+  @State editFlag: boolean = false
+
+  build(){
+    Stack({alignContent: Alignment.TopStart}) {
+      Column(){
+        List({space:20, initialIndex:0}) {
+          ForEach(this.arr, (item, index) => {
+            ListItem() {
+              Flex({direction: FlexDirection.Row, alignItems: ItemAlign.Center}) {
+                Text('' + item)
+                  .width('100%')
+                  .height(80)
+                  .fontSize(20)
+                  .textAlign(TextAlign.Center)
+                  .borderRadius(10)
+                  .backgroundColor(0xFFFFFF)
+                  .flexShrink(1)
+                if (this.editFlag) {
+                  Button() {
+                    Text("delete").fontSize(16)
+                  }.width('30%').height(40)
+                  .onClick(() => {
+                    console.info(this.arr[index] + 'Delete')
+                    this.arr.splice(index, 1)
+                    console.info(JSON.stringify(this.arr))
+                    this.editFlag = false
+                  }).stateEffect(true)
+                }
+              }
+              .gesture(
+                GestureGroup(GestureMode.Exclusive,
+                LongPressGesture()
+                  .onAction(() => {
+                    if (!this.editFlag) {
+                      this.editFlag = true; // 进入编辑模式
+                    }
+                  })
+                )
+              )
+            }
+          }, item => item)
+        }.width('90%')
+
+        // List() {
+        //   LazyForEach(this.arr, item => {
+        //     ListItem() {
+        //
+        //     }
+        //   })
+        // }.cachedCount(3)
+
+      }.width('100%')
+
+      Button('edit list')
+        .onClick(() => {
+          this.editFlag = !this.editFlag
+        }).margin({ top: 5, left: 20 })
+    }.width('100%').height('100%').backgroundColor(0xDCDCDC).padding({ top: 5 })
+  }
+}
+
+
+
 @Component
 struct CityList {
   build() {
@@ -55,7 +123,7 @@ class Contact {
   }
 }
 
-@Entry
+// @Entry
 @Component
 struct SimpleContacts {
   private contacts = [

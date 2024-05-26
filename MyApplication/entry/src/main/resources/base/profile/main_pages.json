@@ -3,6 +3,7 @@
     "pages/Index",
     "pages/Second",
     "pages/ScrollExample",
+    "pages/ListExample",
     "pages/ListEditExample",
     "pages/TabsExample",
     "pages/TabContentExample"
