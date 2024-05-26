@@ -2,6 +2,9 @@
   "src": [
     "pages/Index",
     "pages/Second",
-    "pages/ScrollExample"
+    "pages/ScrollExample",
+    "pages/ListEditExample",
+    "pages/TabsExample",
+    "pages/TabContentExample"
   ]
 }

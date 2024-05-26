@@ -498,7 +498,7 @@ struct Index {
         // 偏移列数
         GridCol({ offset: 2 }){}
         GridCol({ offset: { xs: 2, sm: 2, md: 2, lg: 2 } }){}
-        GridCol(){}.offset(2)
+        // GridCol(){}.offset(2)
         // GridCol(){}.offset({ xs: 1, sm: 2, md: 3, lg: 4 })
 
         // 元素序号
