@@ -6,6 +6,7 @@
     "pages/ListExample",
     "pages/ListEditExample",
     "pages/TabsExample",
-    "pages/TabContentExample"
+    "pages/TabContentExample",
+    "pages/GridExample"
   ]
 }
