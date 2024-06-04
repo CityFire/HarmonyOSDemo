@@ -7,6 +7,7 @@
     "pages/ListEditExample",
     "pages/TabsExample",
     "pages/TabContentExample",
-    "pages/GridExample"
+    "pages/GridExample",
+    "pages/SwiperExample"
   ]
 }
