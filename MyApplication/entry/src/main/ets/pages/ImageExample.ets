@@ -107,7 +107,7 @@ struct ImageExample {
             offset: { x: 0, y: 60 }
           })
 
-        Image($r('app.media.icon'))
+        Image($r('app.media.icon')).width(20).height(20).margin(5)
           .syncLoad(true)
 
 
