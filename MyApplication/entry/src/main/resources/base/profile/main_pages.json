@@ -8,6 +8,7 @@
     "pages/TabsExample",
     "pages/TabContentExample",
     "pages/GridExample",
-    "pages/SwiperExample"
+    "pages/SwiperExample",
+    "pages/NavigationExample"
   ]
 }
