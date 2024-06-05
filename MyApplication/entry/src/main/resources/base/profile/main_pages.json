@@ -9,6 +9,7 @@
     "pages/TabContentExample",
     "pages/GridExample",
     "pages/SwiperExample",
-    "pages/NavigationExample"
+    "pages/NavigationExample",
+    "pages/ImageExample"
   ]
 }
