@@ -10,6 +10,7 @@
     "pages/GridExample",
     "pages/SwiperExample",
     "pages/NavigationExample",
-    "pages/ImageExample"
+    "pages/ImageExample",
+    "pages/ShapeExample"
   ]
 }
