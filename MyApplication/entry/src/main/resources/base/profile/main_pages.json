@@ -11,6 +11,7 @@
     "pages/SwiperExample",
     "pages/NavigationExample",
     "pages/ImageExample",
-    "pages/ShapeExample"
+    "pages/ShapeExample",
+    "pages/CanvasExample"
   ]
 }
