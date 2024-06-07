@@ -12,6 +12,7 @@
     "pages/NavigationExample",
     "pages/ImageExample",
     "pages/ShapeExample",
-    "pages/CanvasExample"
+    "pages/CanvasExample",
+    "pages/AnimateExample"
   ]
 }
