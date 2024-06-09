@@ -13,6 +13,11 @@
     "pages/ImageExample",
     "pages/ShapeExample",
     "pages/CanvasExample",
-    "pages/AnimateExample"
+    "pages/AnimateExample",
+    "pages/SharedTransitionDest",
+    "pages/PageTransitionSrc1",
+    "pages/PageTransitionDst1",
+    "pages/PageTransitionSrc2",
+    "pages/PageTransitionDst2"
   ]
 }

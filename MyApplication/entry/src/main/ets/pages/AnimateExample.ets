@@ -1,4 +1,5 @@
 import curves from '@ohos.curves';
+import router from '@ohos.router';
 @Entry
 @Component
 struct AnimateExample {
@@ -74,6 +75,28 @@ struct AnimateExample {
       })
   }
 
+  // page A
+  pageTransition() {
+    // 定义页面进入时的效果，从左侧滑入，时长为1200ms，无论页面栈发生push还是pop操作均可生效
+    PageTransitionEnter({ type: RouteType.None, duration: 1200 })
+      .slide(SlideEffect.Left)
+    // 定义页面退出时的效果，向左侧滑出，时长为1000ms，无论页面栈发生push还是pop操作均可生效
+    PageTransitionExit({ type: RouteType.None, duration: 1000 })
+      .slide(SlideEffect.Left)
+    // 定义页面进入时的效果，从右侧滑入，时长为1200ms，页面栈发生push操作时该效果才生效
+    PageTransitionEnter({ type: RouteType.Push, duration: 1200 })
+      .slide(SlideEffect.Right)
+    // 定义页面进入时的效果，从左侧滑入，时长为1200ms，页面栈发生pop操作时该效果才生效
+    PageTransitionEnter({ type: RouteType.Pop, duration: 1200 })
+      .slide(SlideEffect.Left)
+    // 定义页面退出时的效果，向左侧滑出，时长为1000ms，页面栈发生push操作时该效果才生效
+    PageTransitionExit({ type: RouteType.Push, duration: 1000 })
+      .slide(SlideEffect.Left)
+    // 定义页面退出时的效果，向右侧滑出，时长为1000ms，页面栈发生pop操作时该效果才生效
+    PageTransitionExit({ type: RouteType.Pop, duration: 1000 })
+      .slide(SlideEffect.Right)
+  }
+
   build() {
     // Column() {
     //   this.LayoutChange();
@@ -132,6 +155,13 @@ struct AnimateExample {
           .transition({ type: TransitionType.Insert, translate: { x: 200, y: -200 } })
           .transition({ type: TransitionType.Delete, opacity: 0, scale: { x: 0, y: 0 } })
       }
+      // 配置Exchange类型的共享元素转场，共享元素id为"sharedImage1"
+      Image($r('app.media.ic_banner02')).width(150).height(100)
+        .sharedTransition('sharedImage1', { duration: 1000, curve: Curve.Linear })
+        .onClick(() => {
+          // 点击小图时路由跳转至下一页面
+          router.pushUrl({ url: 'pages/SharedTransitionDest' });
+        })
     }
     .width("100%")
     .height("100%")
