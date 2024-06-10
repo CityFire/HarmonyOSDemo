@@ -18,6 +18,7 @@
     "pages/PageTransitionSrc1",
     "pages/PageTransitionDst1",
     "pages/PageTransitionSrc2",
-    "pages/PageTransitionDst2"
+    "pages/PageTransitionDst2",
+    "pages/PageTouchEvent"
   ]
 }
