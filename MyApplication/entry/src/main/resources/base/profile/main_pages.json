@@ -19,6 +19,7 @@
     "pages/PageTransitionDst1",
     "pages/PageTransitionSrc2",
     "pages/PageTransitionDst2",
-    "pages/PageTouchEvent"
+    "pages/PageTouchEvent",
+    "pages/MouseExample"
   ]
 }
