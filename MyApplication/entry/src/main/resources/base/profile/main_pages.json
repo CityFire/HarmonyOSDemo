@@ -20,6 +20,9 @@
     "pages/PageTransitionSrc2",
     "pages/PageTransitionDst2",
     "pages/PageTouchEvent",
-    "pages/MouseExample"
+    "pages/MouseExample",
+    "pages/FocusEventExample",
+    "pages/FocusableExample",
+    "pages/FocusSwiperExample"
   ]
 }
