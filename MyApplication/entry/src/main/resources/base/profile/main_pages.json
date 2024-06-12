@@ -23,6 +23,7 @@
     "pages/MouseExample",
     "pages/FocusEventExample",
     "pages/FocusableExample",
-    "pages/FocusSwiperExample"
+    "pages/FocusSwiperExample",
+    "pages/GestureExample"
   ]
 }
