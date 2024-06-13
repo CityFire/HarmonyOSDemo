@@ -24,6 +24,7 @@
     "pages/FocusEventExample",
     "pages/FocusableExample",
     "pages/FocusSwiperExample",
-    "pages/GestureExample"
+    "pages/GestureExample",
+    "pages/GestureGroupExample"
   ]
 }
