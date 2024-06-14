@@ -190,6 +190,7 @@ class MyDataSource extends BasicDataSource {
 @Component
 struct MyComponent {
   private data: MyDataSource = new MyDataSource()
+  @State isVisible: Visibility = Visibility.Visible;
 
   build() {
     List() {
@@ -197,6 +198,16 @@ struct MyComponent {
         ListItem() {
           Row() {
             Text(item).fontSize(20).margin({ left: 10 })
+            Button("显隐切换")
+              .onClick(() => {
+                if (this.isVisible == Visibility.Visible) {
+                  this.isVisible = Visibility.Hidden
+                } else {
+                  this.isVisible = Visibility.Visible
+                }
+              })
+            Row().visibility(this.isVisible)
+              .width(300).height(50).backgroundColor(Color.Pink)
           }
         }
         .onClick(() => {
