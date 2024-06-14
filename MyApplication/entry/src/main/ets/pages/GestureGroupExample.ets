@@ -11,6 +11,8 @@ struct GestureGroupExample {
   @State count1: number = 0;
   @State count2: number = 0;
 
+  @State arr: number[] = Array.from(Array(100), (v,k) => k);  // 构造0-99的数组
+
   @Builder
   GestureModeSequence() {
     Column() {
@@ -102,5 +104,119 @@ struct GestureGroupExample {
       )
     )
 
+  }
+}
+
+class BasicDataSource implements IDataSource {
+  private listeners: DataChangeListener[] = []
+
+  unregisterDataChangeListener(listener: DataChangeListener): void {
+    const pos = this.listeners.indexOf(listener);
+    if (pos >= 0) {
+      console.info('remove listener')
+      this.listeners.splice(pos, 1)
+    }
+  }
+
+  registerDataChangeListener(listener: DataChangeListener): void {
+    if (this.listeners.indexOf(listener) < 0) {
+      console.info('add listener')
+      this.listeners.push(listener)
+    }
+  }
+
+  getData(index: number) {
+    return undefined
+  }
+
+  totalCount(): number {
+    return 0
+  }
+
+  notifyDataReload(): void {
+    this.listeners.forEach(listener => {
+      listener.onDataReloaded()
+    })
+  }
+
+  notifyDataAdd(index: number): void {
+    this.listeners.forEach(listener => {
+      listener.onDataAdd(index)
+    })
+  }
+
+  notifyDataChange(index: number): void {
+    this.listeners.forEach(listener => {
+      listener.onDataChange(index)
+    })
+  }
+
+  notifyDataDelete(index: number): void {
+    this.listeners.forEach(listener => {
+      listener.onDataDelete(index)
+    })
+  }
+
+  notifyDataMove(from: number, to: number): void {
+    this.listeners.forEach(listener => {
+      listener.onDataMove(from, to)
+    })
+  }
+
+}
+
+class MyDataSource extends BasicDataSource {
+  private dataArray: string[] = ['item value: 0', 'item value: 1', 'item value: 2']
+
+  public totalCount(): number {
+    return this.dataArray.length
+  }
+
+  public getData(index: number): any {
+    return this.dataArray[index]
+  }
+
+  public addData(index: number, data: string): void {
+    this.dataArray.splice(index, 0, data)
+    this.notifyDataAdd(index)
+  }
+
+  public pushData(data: string): void {
+    this.dataArray.push(data)
+    this.notifyDataAdd(this.dataArray.length - 1)
+  }
+}
+
+@Component
+struct MyComponent {
+  private data: MyDataSource = new MyDataSource()
+
+  build() {
+    List() {
+      LazyForEach(this.data, (item: string) => {
+        ListItem() {
+          Row() {
+            Text(item).fontSize(20).margin({ left: 10 })
+          }
+        }
+        .onClick(() => {
+          this.data.pushData('item value: ' + this.data.totalCount())
+        })
+      }, item => item)
+    }
+
+    /*
+    Scroll() {
+      List() {
+        LazyForEach(this.data, (item: string, index: number) => {
+          ListItem() {
+            Row() {
+              Text('item value: ' + item + (index + 1)).fontSize(20).margin(10)
+            }
+          }
+        })
+      }
+    }
+    */
   }
 }
