@@ -27,6 +27,7 @@
     "pages/GestureExample",
     "pages/GestureGroupExample",
     "pages/WebExample",
-    "pages/WebComponent"
+    "pages/WebComponent",
+    "pages/GeoLocationExample"
   ]
 }
