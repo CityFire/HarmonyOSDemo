@@ -28,6 +28,7 @@
     "pages/GestureGroupExample",
     "pages/WebExample",
     "pages/WebComponent",
-    "pages/GeoLocationExample"
+    "pages/GeoLocationExample",
+    "pages/WebComponentExample"
   ]
 }
