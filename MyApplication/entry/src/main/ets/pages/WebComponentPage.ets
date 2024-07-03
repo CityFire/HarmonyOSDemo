@@ -7,6 +7,17 @@ import call from '@ohos.telephony.call';
 struct WebComponentPage {
   @State mode: CacheMode = CacheMode.None;
   webviewController: web_webview.WebviewController = new web_webview.WebviewController();
+  responseResource: WebResourceResponse = new WebResourceResponse()
+  // 开发者自定义响应数据
+  @State webdata: string = "<!DOCTYPE html>\n" +
+  "<html>\n"+
+  "<head>\n"+
+  "<title>intercept test</title>\n"+
+  "</head>\n"+
+  "<body>\n"+
+  "<h1>intercept test</h1>\n"+
+  "</body>\n"+
+  "</html>"
 
   build() {
     Column() {
@@ -51,6 +62,24 @@ struct WebComponentPage {
             return true;
           }
           return false;
+        })
+        .onInterceptRequest((event?: Record<string, WebResourceRequest>): WebResourceResponse => {
+          if (!event) {
+            return new WebResourceResponse();
+          }
+          let mRequest: WebResourceRequest = event.request as WebResourceRequest;
+          console.info('TAGLee: url:'+ mRequest.getRequestUrl());
+          //拦截页面请求，如果加载的url判断与目标url一致则返回自定义加载结果webdata
+          if (mRequest.getRequestUrl() === 'https://www.example.com/test.html') {
+            // 构造响应数据
+            this.responseResource.setResponseData(this.webdata);
+            this.responseResource.setResponseEncoding('utf-8');
+            this.responseResource.setResponseMimeType('text/html');
+            this.responseResource.setResponseCode(200);
+            this.responseResource.setReasonMessage('OK');
+            return this.responseResource;
+          }
+          return;
         })
     }
   }
