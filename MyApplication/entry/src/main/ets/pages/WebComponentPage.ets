@@ -19,6 +19,18 @@ struct WebComponentPage {
   "</body>\n"+
   "</html>"
 
+  aboutToAppear() {
+    // 配置web开启调试模式
+    web_webview.WebviewController.setWebDebuggingAccess(true);
+  }
+
+  // 将设备连接上电脑，在电脑端配置端口映射，配置方法如下：
+  // // 添加映射
+  // hdc fport tcp:9222 tcp:9222
+  // // 查看映射
+  // hdc fport ls
+  // 在电脑端chrome浏览器地址栏中输入chrome://inspect/#devices，页面识别到设备后，就可以开始页面调试。调试效果如下：
+
   build() {
     Column() {
       Button('setCookie')
