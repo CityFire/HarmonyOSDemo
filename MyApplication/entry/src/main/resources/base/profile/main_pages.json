@@ -29,6 +29,8 @@
     "pages/WebExample",
     "pages/WebComponent",
     "pages/GeoLocationExample",
-    "pages/WebComponentExample"
+    "pages/WebComponentExample",
+    "pages/WebComponentPage",
+    "pages/ProfilePage"
   ]
 }
