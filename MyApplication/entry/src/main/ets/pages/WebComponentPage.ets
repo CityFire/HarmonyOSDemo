@@ -5,10 +5,31 @@ import call from '@ohos.telephony.call';
 @Entry
 @Component
 struct WebComponentPage {
+  @State mode: CacheMode = CacheMode.None;
   webviewController: web_webview.WebviewController = new web_webview.WebviewController();
 
   build() {
     Column() {
+      Button('setCookie')
+        .onClick(() => {
+          try {
+            web_webview.WebCookieManager.setCookie('https://www.example.com', 'value=test');
+          } catch (error) {
+            console.error(`ErrorCode: ${error.code},  Message: ${error.message}`);
+          }
+        })
+      Button('removeCache')
+        .onClick(() => {
+          try {
+            // 设置为true时同时清除rom和ram中的缓存，设置为false时只清除ram中的缓存
+            this.webviewController.removeCache(true);
+          } catch (error) {
+            console.error(`ErrorCode: ${error.code},  Message: ${error.message}`);
+          }
+        })
+      Web({ src: 'www.example.com', controller: this.webviewController })
+        .cacheMode(this.mode)
+        .domStorageAccess(true)
       Web({ src: $rawfile('route.html'), controller: this.webviewController })
         .onUrlLoadIntercept((event) => {
           let url: string = event.data as string;
