@@ -31,6 +31,17 @@ struct Index {
         .onClick(() => {
           router.pushUrl({ url: 'pages/Second' })
         })
+
+        Button('click to library')
+          .onClick(()=>{
+            router.pushUrl({ // url内容的模板为：'@bundle:包名（bundleName）/模块名（moduleName）/路径/页面所在的文件名(不加.ets后缀)'
+              url: '@bundle:com.example.myatomicservice/library/src/main/ets/pages/menu'
+            }).then(() => {
+              console.info('push page success');
+            }).catch((err) => {
+              console.error(`pushUrl failed, code is ${err.code}, message is ${err.message}`);
+            })
+          })
       }
       .width('100%')
     }
