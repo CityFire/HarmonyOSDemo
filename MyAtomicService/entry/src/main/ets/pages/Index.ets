@@ -25,6 +25,7 @@ struct Index {
           top: 20
         })
         .backgroundColor('#0D9FFB')
+        .margin(10)
         .width('40%')
         .height('5%')
         // 跳转按钮绑定onClick事件，点击时跳转到第二页
@@ -33,6 +34,7 @@ struct Index {
         })
 
         Button('click to library')
+          .backgroundColor('#0D9FFB')
           .onClick(()=>{
             router.pushUrl({ // url内容的模板为：'@bundle:包名（bundleName）/模块名（moduleName）/路径/页面所在的文件名(不加.ets后缀)'
               url: '@bundle:com.example.myatomicservice/library/src/main/ets/pages/menu'
