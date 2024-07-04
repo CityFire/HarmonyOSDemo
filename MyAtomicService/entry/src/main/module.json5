@@ -11,6 +11,13 @@
     "deliveryWithInstall": true,
     "installationFree": true,
     "pages": "$profile:main_pages",
+    "atomicService": {
+      "preloads": [
+        {
+          "moduleName": "library"
+        }
+      ]
+    },
     "abilities": [
       {
         "name": "EntryAbility",
