@@ -81,8 +81,36 @@
       "value": "56vp"
     },
     {
+      "name": "commodity_item_height",
+      "value": "263vp"
+    },
+    {
+      "name": "commodity_list_margin",
+      "value": "-6vp"
+    },
+    {
+      "name": "commodity_desc_height",
+      "value": "20vp"
+    },
+    {
+      "name": "commodity_item_image_size",
+      "value": "132vp"
+    },
+    {
+      "name": "count_text_width",
+      "value": "32vp"
+    },
+    {
+      "name": "count_width",
+      "value": "78vp"
+    },
+    {
       "name": "empty_image_size",
       "value": "60vp"
+    },
+    {
+      "name": "capsule_height",
+      "value": "40vp"
     }
   ]
 }

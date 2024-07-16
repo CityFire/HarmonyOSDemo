@@ -1,4 +1,4 @@
-import { BreakpointConstants, Commodity, LocalDataManager, StyleConstants } from 'common'
+import { BreakpointConstants, Commodity, CommodityList, LocalDataManager, StyleConstants } from 'common'
 import { activityTitle, ActivityTitleModel, classifyTitle, searchSwiper, swiperImage } from '../viewmodel/HomeData';
 
 @Component
@@ -172,7 +172,13 @@ export struct Home {
             this.CustomSwiper()
             this.ActivityTitle()
 
-
+            CommodityList({
+              commodityList: $commodityList,
+              column: this.currentBreakpoint === BreakpointConstants.BREAKPOINT_LG ? StyleConstants.DISPLAY_FOUR :
+                (this.currentBreakpoint === BreakpointConstants.BREAKPOINT_MD ?
+                StyleConstants.DISPLAY_THREE : StyleConstants.DISPLAY_TWO),
+              onClickItem: (data: Commodity): void => this.onClickItem(data)
+            })
           }
         }
         .scrollBar(BarState.Off)
