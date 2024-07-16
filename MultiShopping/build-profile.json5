@@ -34,6 +34,10 @@
     {
       "name": "newproduct",
       "srcPath": "./features/newproduct"
+    },
+    {
+      "name": "shopcart",
+      "srcPath": "./features/shopcart"
     }
   ]
 }
