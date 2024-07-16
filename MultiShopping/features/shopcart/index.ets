@@ -1,1 +1,1 @@
-export { MainPage } from './src/main/ets/components/mainpage/MainPage'
+export { ShopCart } from './src/main/ets/components/ShopCart'

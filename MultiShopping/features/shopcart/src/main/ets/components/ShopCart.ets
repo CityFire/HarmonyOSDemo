@@ -1,6 +1,6 @@
 @Component
-export struct MainPage {
-  @State message: string = 'Hello World'
+export struct ShopCart {
+  @State message: string = 'Hello ShopCart'
 
   build() {
     Row() {
