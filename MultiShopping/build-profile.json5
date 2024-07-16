@@ -30,6 +30,10 @@
     {
       "name": "home",
       "srcPath": "./features/home"
+    },
+    {
+      "name": "newproduct",
+      "srcPath": "./features/newproduct"
     }
   ]
 }
