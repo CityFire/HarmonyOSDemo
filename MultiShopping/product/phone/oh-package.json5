@@ -6,6 +6,10 @@
   "author": "",
   "license": "",
   "dependencies": {
-    "common": "file:../../common" // 这个很关键
+    "common": "file:../../common", // 这个很关键
+    "home": "../../features/home",
+    "newproduct": "../../features/newproduct",
+    "shopcart": "../../features/shopcart",
+    "personal": "../../features/personal"
   }
 }
