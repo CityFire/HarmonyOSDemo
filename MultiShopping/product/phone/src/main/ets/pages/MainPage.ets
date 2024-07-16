@@ -1,17 +1,78 @@
+import { BreakpointConstants } from 'common/src/main/ets/constants/BreakpointConstants';
+import { Home } from 'home';
+import { NewProduct } from 'newproduct';
+import { ShopCart } from 'shopcart';
+import { Personal } from 'personal';
+import { buttonInfo, ButtonInfoModel } from '../viewmodel/MainPageData';
+import { PageConstants } from '../constants/PageConstants';
+import { StyleConstants } from 'common';
+
 @Entry
 @Component
 struct MainPage {
-  @State message: string = 'Hello MainPage'
+  @StorageProp('currentBreakpoint') currentBreakpoint: string = 'sm';
+  @StorageLink('IndexPage') currentPageIndex: number = 0;
 
   build() {
-    Row() {
-      Column() {
-        Text(this.message)
-          .fontSize(50)
-          .fontWeight(FontWeight.Bold)
+    Column() {
+      Tabs({
+        barPosition: this.currentBreakpoint === BreakpointConstants.BREAKPOINT_LG ? BarPosition.Start : BarPosition.End,
+        index: this.currentPageIndex
+      }) {
+        TabContent() {
+          Home({
+
+          })
+        }
+        .tabBar(this.BottomNavigation(buttonInfo[PageConstants.HOME_INDEX]))
+
+        TabContent() {
+          NewProduct()
+        }
+        .tabBar(this.BottomNavigation(buttonInfo[PageConstants.NEW_PRODUCT_INDEX]))
+
+        TabContent() {
+          ShopCart()
+        }
+        .tabBar(this.BottomNavigation(buttonInfo[PageConstants.SHOP_CART_INDEX]))
+
+        TabContent() {
+          Personal()
+        }
+        .tabBar(this.BottomNavigation(buttonInfo[PageConstants.PERSONAL_INDEX]))
       }
-      .width('100%')
+      .barWidth(this.currentBreakpoint === BreakpointConstants.BREAKPOINT_LG ?
+      $r('app.float.bar_width') : StyleConstants.FULL_WIDTH)
+      .barHeight(this.currentBreakpoint === BreakpointConstants.BREAKPOINT_LG ?
+      StyleConstants.SIXTY_HEIGHT : $r('app.float.vp_fifty_six'))
+      .vertical(this.currentBreakpoint === BreakpointConstants.BREAKPOINT_LG)
+      .scrollable(false)
+      .onChange((index: number) => {
+        this.currentPageIndex = index;
+        if (index === PageConstants.PERSONAL_INDEX) {
+
+        }
+      })
     }
-    .height('100%')
+    .backgroundColor($r('app.color.page_background'))
+  }
+
+  @Builder BottomNavigation(button: ButtonInfoModel) {
+    Column({ space: PageConstants.BUTTON_SPACE }) {
+      Image(this.currentPageIndex === button.index ? button.selectImg : button.img)
+        .objectFit(ImageFit.Contain)
+        .width($r('app.float.main_image_size'))
+        .height($r('app.float.main_image_size'))
+      Text(button.title)
+        .fontColor(this.currentPageIndex === button.index ? $r('app.color.focus_color') : Color.Black)
+        .opacity(this.currentPageIndex === button.index ? StyleConstants.FULL_OPACITY : StyleConstants.SIXTY_OPACITY)
+        .fontWeight(StyleConstants.FONT_WEIGHT_FIVE)
+        .textAlign(TextAlign.Center)
+        .fontSize($r('app.float.micro_font_size'))
+    }
+    .width(StyleConstants.FULL_WIDTH)
+    .height(StyleConstants.FULL_HEIGHT)
+    .alignItems(HorizontalAlign.Center)
+    .justifyContent(FlexAlign.Center)
   }
 }

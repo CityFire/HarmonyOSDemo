@@ -10,7 +10,23 @@
     },
     {
       "name": "EntryAbility_label",
-      "value": "label"
+      "value": "MultiShoppingOnline"
+    },
+    {
+      "name": "home",
+      "value": "Home"
+    },
+    {
+      "name": "new_product",
+      "value": "NewProduct"
+    },
+    {
+      "name": "cart",
+      "value": "ShoppingCart"
+    },
+    {
+      "name": "mine",
+      "value": "Mine"
     },
     {
       "name": "splash_desc",
