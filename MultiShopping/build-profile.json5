@@ -38,6 +38,10 @@
     {
       "name": "shopcart",
       "srcPath": "./features/shopcart"
+    },
+    {
+      "name": "personal",
+      "srcPath": "./features/personal"
     }
   ]
 }
