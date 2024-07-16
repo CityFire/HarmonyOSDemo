@@ -5,13 +5,33 @@ import { ShopCart } from 'shopcart';
 import { Personal } from 'personal';
 import { buttonInfo, ButtonInfoModel } from '../viewmodel/MainPageData';
 import { PageConstants } from '../constants/PageConstants';
-import { StyleConstants } from 'common';
+import { BreakPointSystem, LocalDataManager, Product, StyleConstants } from 'common';
 
 @Entry
 @Component
 struct MainPage {
   @StorageProp('currentBreakpoint') currentBreakpoint: string = 'sm';
   @StorageLink('IndexPage') currentPageIndex: number = 0;
+  @State shoppingCartCache: Product[] = [];
+  @State shoppingCartList: Product[] = [];
+
+  private breakpointSystem = new BreakPointSystem();
+  private localDataManager: LocalDataManager = LocalDataManager.instance();
+
+  aboutToAppear() {
+    this.breakpointSystem.register();
+    this.shoppingCartList = this.shoppingCartCache?.length > 0 ? this.shoppingCartCache : [];
+    this.queryOrderList();
+  }
+
+  aboutToDisappear() {
+    this.breakpointSystem.unregister();
+  }
+
+  onPageShow() {
+    this.queryShopCart();
+    this.queryOrderList();
+  }
 
   build() {
     Column() {
@@ -49,8 +69,10 @@ struct MainPage {
       .scrollable(false)
       .onChange((index: number) => {
         this.currentPageIndex = index;
-        if (index === PageConstants.PERSONAL_INDEX) {
-
+        if (index === PageConstants.SHOP_CART_INDEX) {
+          this.queryShopCart();
+        } else if (index === PageConstants.PERSONAL_INDEX) {
+          this.queryOrderList();
         }
       })
     }
@@ -74,5 +96,16 @@ struct MainPage {
     .height(StyleConstants.FULL_HEIGHT)
     .alignItems(HorizontalAlign.Center)
     .justifyContent(FlexAlign.Center)
+  }
+
+  queryShopCart() {
+    const shoppingData = this.localDataManager.queryShopCart();
+    this.shoppingCartList = shoppingData;
+    this.shoppingCartCache = shoppingData;
+  }
+
+  queryOrderList() {
+    const orderList = this.localDataManager.queryOrderList();
+
   }
 }
