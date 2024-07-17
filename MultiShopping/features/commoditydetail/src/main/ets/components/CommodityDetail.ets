@@ -1,10 +1,12 @@
-import { Commodity, CommonDataSource, GridConstants, LocalDataManager, ProductSpecification, StyleConstants } from 'common';
+import { Commodity, CommonDataSource, getID, GridConstants, LocalDataManager, Logger, Order, ProductSpecification, Specification, StyleConstants } from 'common';
 import router from '@ohos.router';
 import { barData, BarData, Evaluate, moreEvaluate, serviceList, userEvaluate } from '../viewmodel/CommodityDetailData';
 import { SpecificationDialog } from './SpecificationDialog';
 import { CommodityConstants } from '../constants/CommodityConstants';
 import { CapsuleGroupButton } from './CapsuleGroupButton';
 import { FinishType } from '../viewmodel/TypeModel';
+import { ShopProps } from 'common/src/main/ets/viewmodel/ProductModel';
+import promptAction from '@ohos.promptAction';
 
 @Extend(Button) function titleButton() {
   .backgroundColor($r('app.color.zero_alpha_black'))
@@ -17,31 +19,93 @@ import { FinishType } from '../viewmodel/TypeModel';
 export struct CommodityDetail {
   @Prop commodityId: string;
   @State info?: Commodity = undefined;
+  @State @Watch('onSelectKeysChange') selectKeys?: ProductSpecification[] = [];
   @State count: number = 1;
   @State swiperIndex: number = 0;
   @State productOptions: string = '';
   private localDataManager: LocalDataManager = LocalDataManager.instance();
   private data: CommonDataSource<Evaluate> = new CommonDataSource<Evaluate>(userEvaluate.evaluate !== undefined ? userEvaluate.evaluate : []);
 
-  // dialogController: CustomDialogController = new CustomDialogController({
-  //   builder: SpecificationDialog({
-  //
-  //   }),
-  //   autoCancel: true,
-  //   alignment: DialogAlignment.Bottom,
-  //   customStyle: true
-  // })
+  dialogController: CustomDialogController = new CustomDialogController({
+    builder: SpecificationDialog({
+      onFinish: (type: FinishType, count: number, selectKeys: ProductSpecification[]): void =>
+              this.onSpecificationFinish(type, count, selectKeys),
+      data: $info,
+      count: $count,
+      selectTags: $selectKeys,
+      productOptions: $productOptions
+    }),
+    autoCancel: true,
+    alignment: DialogAlignment.Bottom,
+    customStyle: true
+  })
 
   aboutToAppear() {
     this.info = this.localDataManager.queryCommodityListById(this.commodityId);
+    if (this.info.specifications !== undefined) {
+      this.info.specifications.forEach((item: Specification) => {
+        if (this.selectKeys !== undefined) {
+          let specificationData: ProductSpecification = new ProductSpecification()
+          specificationData.name = item.title;
+          specificationData.value = item.data[0].key;
+          this.selectKeys.push(specificationData);
+        }
+      })
+    }
+  }
+
+  onSelectKeysChange() {
+    this.productOptions = '';
+    if (this.selectKeys !== undefined) {
+      this.selectKeys.forEach((item) => {
+        this.productOptions += item.value + ' ';
+      })
+    }
   }
 
   onSpecificationFinish(type: FinishType, count: number, selectKeys: ProductSpecification[]) {
-
+    this.count = count;
+    this.selectKeys = selectKeys;
+    const params: ShopProps = {
+      id: getID(),
+      commodityId: this.info !== undefined ? this.info.id : '',
+      count: count,
+      specifications: this.selectKeys
+    }
+    switch (type) {
+      case FinishType.JOIN_SHOPPING_CART:
+        this.localDataManager.insertShopCart(params);
+        promptAction.showToast({
+           message: $r('app.string.insert_cart_success')
+        });
+        break;
+      case FinishType.BUY_NOW:
+        if (this.info !== undefined) {
+          let orderList: Order = {
+            orderId: params.id,
+            image: this.info.images[0],
+            title: this.info.title,
+            description: this.info.description,
+            price: this.info.price,
+            count: params.count,
+            commodityId: Number.parseInt(params.commodityId),
+            specifications: this.selectKeys
+          }
+          router.pushUrl({
+            url: CommodityConstants.CONFIRM_ORDER_PAGE_URL,
+            params: { orderList: [orderList] }
+          }).catch((err: Error) => {
+            Logger.error(JSON.stringify(err));
+          });
+          break;
+        }
+    }
   }
 
   bottomBtnClick(type: FinishType) {
-
+    if (this.selectKeys !== undefined) {
+      this.onSpecificationFinish(type, this.count, this.selectKeys);
+    }
   }
 
   @Styles backgroundStyle() {
@@ -66,6 +130,7 @@ export struct CommodityDetail {
         ForEach(payload, (item: string) => {
           Flex({ justifyContent: FlexAlign.Center }) {
             Image($rawfile(item))
+              .width(StyleConstants.FULL_WIDTH)
               .height(StyleConstants.FULL_HEIGHT)
               .aspectRatio(1)
               .objectFit(ImageFit.Cover)
@@ -155,7 +220,7 @@ export struct CommodityDetail {
           .width($r('app.float.vp_six'))
       }
       .layoutWeight(StyleConstants.LAYOUT_WEIGHT)
-      // .onClick(():void => this.dialogController.open())
+      .onClick(():void => this.dialogController.open())
     }
     .backgroundStyle()
   }
