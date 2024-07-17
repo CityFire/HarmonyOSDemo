@@ -11,6 +11,7 @@
     "newproduct": "../../features/newproduct",
     "shopcart": "../../features/shopcart",
     "personal": "../../features/personal",
-    "orderdetail": "../../features/orderdetail"
+    "orderdetail": "../../features/orderdetail",
+    "commoditydetail": "../../features/commoditydetail" // 商品详情页
   }
 }

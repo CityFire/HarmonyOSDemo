@@ -2,6 +2,7 @@
   "src": [
     "pages/MainPage",
     "pages/SplashPage",
-    "pages/OrderDetailListPage"
+    "pages/OrderDetailListPage",
+    "pages/CommodityDetailPage"
   ]
 }

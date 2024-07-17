@@ -46,6 +46,10 @@
     {
       "name": "orderdetail",
       "srcPath": "./features/orderdetail"
+    },
+    {
+      "name": "commoditydetail",
+      "srcPath": "./features/commoditydetail"
     }
   ]
 }
