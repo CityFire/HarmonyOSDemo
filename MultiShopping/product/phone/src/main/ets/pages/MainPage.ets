@@ -5,8 +5,9 @@ import { ShopCart } from 'shopcart';
 import { Personal } from 'personal';
 import { buttonInfo, ButtonInfoModel } from '../viewmodel/MainPageData';
 import { PageConstants } from '../constants/PageConstants';
-import { BreakPointSystem, LocalDataManager, Product, StyleConstants } from 'common';
+import { BreakPointSystem, Commodity, LocalDataManager, Logger, OrderOperationStatus, Product, StyleConstants } from 'common';
 import { OrderCount } from 'personal/src/main/ets/viewmodel/IconButtonModel';
+import router from '@ohos.router';
 
 @Entry
 @Component
@@ -41,6 +42,15 @@ struct MainPage {
     this.queryOrderList();
   }
 
+  routerDetailPage(data: Commodity) {
+    router.pushUrl({
+      url: PageConstants.COMMODITY_DETAIL_PAGE_URL,
+      params: { id: data.id }
+    }).catch((err: Error) => {
+      Logger.error(JSON.stringify(err));
+    });
+  }
+
   build() {
     Column() {
       Tabs({
@@ -49,7 +59,7 @@ struct MainPage {
       }) {
         TabContent() {
           Home({
-
+            onClickItem: (data: Commodity): void => this.routerDetailPage(data)
           })
         }
         .tabBar(this.BottomNavigation(buttonInfo[PageConstants.HOME_INDEX]))
@@ -117,6 +127,12 @@ struct MainPage {
 
   queryOrderList() {
     const orderList = this.localDataManager.queryOrderList();
-
+    this.orderCount = {
+      payment: orderList.filter(item => item.status === OrderOperationStatus.UN_PAY).length,
+      ship: 0,
+      receipt: orderList.filter(item => item.status === OrderOperationStatus.DELIVERED).length,
+      evaluation: orderList.filter(item => item.status === OrderOperationStatus.RECEIPT).length,
+      sale: 0
+    };
   }
 }

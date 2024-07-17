@@ -20,6 +20,11 @@ export class PageConstants {
   static readonly  MAIN_PAGE_URL: string = 'pages/MainPage';
 
   /**
+   * CommodityDetailPage url.
+   */
+  static readonly  COMMODITY_DETAIL_PAGE_URL: string = 'pages/CommodityDetailPage';
+
+  /**
    * Index of home tab.
    */
   static readonly HOME_INDEX: number = 0;
@@ -48,6 +53,21 @@ export class PageConstants {
    * Key of router get params: tabIndex.
    */
   static readonly TABLE_INDEX_KEY: string = 'tabIndex';
+
+  /**
+   * Key of router get params: orderList.
+   */
+  static readonly ORDER_LIST_KEY: string = 'orderList';
+
+  /**
+   * Key of router get params: order.
+   */
+  static readonly ORDER_KEY: string = 'order';
+
+  /**
+   * Key of router get params: orderIds.
+   */
+  static readonly ORDER_IDS_KEY: string = 'orderIds';
 
   /**
    * Key of router get params: id.
