@@ -6,6 +6,7 @@ import { Personal } from 'personal';
 import { buttonInfo, ButtonInfoModel } from '../viewmodel/MainPageData';
 import { PageConstants } from '../constants/PageConstants';
 import { BreakPointSystem, LocalDataManager, Product, StyleConstants } from 'common';
+import { OrderCount } from 'personal/src/main/ets/viewmodel/IconButtonModel';
 
 @Entry
 @Component
@@ -14,6 +15,13 @@ struct MainPage {
   @StorageLink('IndexPage') currentPageIndex: number = 0;
   @State shoppingCartCache: Product[] = [];
   @State shoppingCartList: Product[] = [];
+  @State orderCount: OrderCount = {
+    payment: 0,
+    ship: 0,
+    receipt: 0,
+    evaluation: 0,
+    sale: 0
+  };
 
   private breakpointSystem = new BreakPointSystem();
   private localDataManager: LocalDataManager = LocalDataManager.instance();
@@ -57,7 +65,7 @@ struct MainPage {
         .tabBar(this.BottomNavigation(buttonInfo[PageConstants.SHOP_CART_INDEX]))
 
         TabContent() {
-          Personal()
+          Personal({ orderCount: $orderCount })
         }
         .tabBar(this.BottomNavigation(buttonInfo[PageConstants.PERSONAL_INDEX]))
       }
