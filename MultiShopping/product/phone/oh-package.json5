@@ -10,6 +10,7 @@
     "home": "../../features/home",
     "newproduct": "../../features/newproduct",
     "shopcart": "../../features/shopcart",
-    "personal": "../../features/personal"
+    "personal": "../../features/personal",
+    "orderdetail": "../../features/orderdetail"
   }
 }

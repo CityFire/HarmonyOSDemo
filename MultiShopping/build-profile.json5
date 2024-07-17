@@ -42,6 +42,10 @@
     {
       "name": "personal",
       "srcPath": "./features/personal"
+    },
+    {
+      "name": "orderdetail",
+      "srcPath": "./features/orderdetail"
     }
   ]
 }

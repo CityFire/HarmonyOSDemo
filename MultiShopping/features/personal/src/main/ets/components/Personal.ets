@@ -68,7 +68,7 @@ export struct Personal {
   }
 
   @Styles
-  cardStyle(){
+  cardStyle() {
     .width(StyleConstants.FULL_WIDTH)
     .backgroundColor(Color.White)
     .borderRadius($r('app.float.vp_sixteen'))
