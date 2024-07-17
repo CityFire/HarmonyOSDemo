@@ -60,7 +60,10 @@ struct MainPage {
         .tabBar(this.BottomNavigation(buttonInfo[PageConstants.NEW_PRODUCT_INDEX]))
 
         TabContent() {
-          ShopCart()
+          ShopCart({
+            products: $shoppingCartList,
+            onNeedUpdate: (): void => this.queryShopCart()
+          })
         }
         .tabBar(this.BottomNavigation(buttonInfo[PageConstants.SHOP_CART_INDEX]))
 
