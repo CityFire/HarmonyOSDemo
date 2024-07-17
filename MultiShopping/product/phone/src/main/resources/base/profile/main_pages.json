@@ -4,6 +4,7 @@
     "pages/SplashPage",
     "pages/OrderDetailListPage",
     "pages/CommodityDetailPage",
-    "pages/ConfirmOrderPage"
+    "pages/ConfirmOrderPage",
+    "pages/PayOrderPage"
   ]
 }
