@@ -1,6 +1,10 @@
-import { Commodity, StyleConstants } from 'common';
+import { Commodity, CommonDataSource, GridConstants, LocalDataManager, ProductSpecification, StyleConstants } from 'common';
 import router from '@ohos.router';
-import { barData, BarData } from '../viewmodel/CommodityDetailData';
+import { barData, BarData, Evaluate, moreEvaluate, serviceList, userEvaluate } from '../viewmodel/CommodityDetailData';
+import { SpecificationDialog } from './SpecificationDialog';
+import { CommodityConstants } from '../constants/CommodityConstants';
+import { CapsuleGroupButton } from './CapsuleGroupButton';
+import { FinishType } from '../viewmodel/TypeModel';
 
 @Extend(Button) function titleButton() {
   .backgroundColor($r('app.color.zero_alpha_black'))
@@ -13,14 +17,34 @@ import { barData, BarData } from '../viewmodel/CommodityDetailData';
 export struct CommodityDetail {
   @Prop commodityId: string;
   @State info?: Commodity = undefined;
-
+  @State count: number = 1;
   @State swiperIndex: number = 0;
+  @State productOptions: string = '';
+  private localDataManager: LocalDataManager = LocalDataManager.instance();
+  private data: CommonDataSource<Evaluate> = new CommonDataSource<Evaluate>(userEvaluate.evaluate !== undefined ? userEvaluate.evaluate : []);
+
+  // dialogController: CustomDialogController = new CustomDialogController({
+  //   builder: SpecificationDialog({
+  //
+  //   }),
+  //   autoCancel: true,
+  //   alignment: DialogAlignment.Bottom,
+  //   customStyle: true
+  // })
 
   aboutToAppear() {
+    this.info = this.localDataManager.queryCommodityListById(this.commodityId);
+  }
+
+  onSpecificationFinish(type: FinishType, count: number, selectKeys: ProductSpecification[]) {
 
   }
 
-  @Styles backgroundStyle(){
+  bottomBtnClick(type: FinishType) {
+
+  }
+
+  @Styles backgroundStyle() {
     .backgroundColor(Color.White)
     .borderRadius($r('app.float.vp_sixteen'))
     .padding({
@@ -116,8 +140,318 @@ export struct CommodityDetail {
     .backgroundStyle()
   }
 
+  @Builder Specification() {
+    Row() {
+      Text($r('app.string.choice'))
+        .fontColor(Color.Black)
+        .fontSize($r('app.float.small_font_size'))
+        .fontWeight(StyleConstants.FONT_WEIGHT_FIVE)
+        .margin({ right: $r('app.float.vp_sixteen') })
+      Flex({ justifyContent: FlexAlign.SpaceBetween }) {
+        Text(`${this.productOptions}x${this.count}`)
+          .fontSize($r('app.float.small_font_size'))
+        Image($r('app.media.ic_point'))
+          .height($r('app.float.vp_twelve'))
+          .width($r('app.float.vp_six'))
+      }
+      .layoutWeight(StyleConstants.LAYOUT_WEIGHT)
+      // .onClick(():void => this.dialogController.open())
+    }
+    .backgroundStyle()
+  }
+
+  @Builder SpecialService() {
+    Column() {
+      Flex({
+        justifyContent: FlexAlign.SpaceBetween,
+        alignItems: ItemAlign.Start
+      }) {
+        Text($r('app.string.send'))
+          .fontColor(Color.Black)
+          .fontSize($r('app.float.small_font_size'))
+          .fontWeight(StyleConstants.FONT_WEIGHT_FIVE)
+          .margin({ right: $r('app.float.vp_sixteen') })
+        Flex({
+          justifyContent: FlexAlign.SpaceBetween,
+          alignItems: ItemAlign.Center
+        }) {
+          Row() {
+            Image($r('app.media.ic_send'))
+              .width($r('app.float.vp_sixteen'))
+              .height($r('app.float.vp_sixteen'))
+            Text($r('app.string.send_hint'))
+              .fontColor($r('app.color.sixty_alpha_black'))
+              .fontSize($r('app.float.small_font_size'))
+              .margin({ left: $r('app.float.vp_eight') })
+          }
+
+          Image($r('app.media.ic_point'))
+            .height($r('app.float.vp_twelve'))
+            .width($r('app.float.vp_six'))
+        }
+        .layoutWeight(StyleConstants.LAYOUT_WEIGHT)
+        .height($r('app.float.vp_twenty'))
+        .margin({ bottom: $r('app.float.vp_sixteen') })
+      }
+
+      Divider()
+        .margin({
+          left: $r('app.float.vp_fifty_six'),
+          right: $r('app.float.vp_twelve'),
+          bottom: $r('app.float.vp_twelve')
+        })
+        .height($r('app.float.service_divide_height'))
+        .backgroundColor($r('app.color.twenty_alpha_black'))
+      Flex({
+        justifyContent: FlexAlign.SpaceBetween,
+        alignItems: ItemAlign.Start
+      }) {
+        Text($r('app.string.service'))
+          .fontColor(Color.Black)
+          .fontSize($r('app.float.small_font_size'))
+          .fontWeight(StyleConstants.FONT_WEIGHT_FIVE)
+          .margin({ right: $r('app.float.vp_sixteen') })
+        Flex({ direction: FlexDirection.Column }) {
+          ForEach(serviceList, (item: string, index?: number) => {
+            Flex({ alignItems: ItemAlign.Center }) {
+              Image($r('app.media.ic_supplying'))
+                .width($r('app.float.vp_sixteen'))
+                .height($r('app.float.vp_sixteen'))
+              Text(item)
+                .fontColor(Color.Black)
+                .fontSize($r('app.float.vp_fourteen'))
+                .margin({ left: $r('app.float.vp_eight') })
+            }
+            .height($r('app.float.vp_twenty'))
+            .margin({
+              bottom: index === serviceList.length - 1 ? 0 : $r('app.float.vp_sixteen')
+            })
+          }, (item: string) => JSON.stringify(item))
+        }
+        .layoutWeight(StyleConstants.LAYOUT_WEIGHT)
+      }
+    }
+    .backgroundStyle()
+  }
+
+  @Builder UserEvaluate() {
+    Column({ space: StyleConstants.TWELVE_SPACE }) {
+      Row() {
+        Text(userEvaluate.title)
+          .fontSize($r('app.float.middle_font_size'))
+          .fontWeight(StyleConstants.FONT_WEIGHT_FIVE)
+          .fontColor(Color.Black)
+        Blank()
+        Text(userEvaluate.favorable)
+          .fontSize($r('app.float.small_font_size'))
+          .fontColor($r('app.color.focus_color'))
+        Text($r('app.string.evaluate_favorable'))
+          .fontSize($r('app.float.small_font_size'))
+          .fontColor($r('app.color.sixty_alpha_black'))
+        Image($r('app.media.ic_right_arrow'))
+          .objectFit(ImageFit.Contain)
+          .height($r('app.float.vp_twenty_four'))
+          .width($r('app.float.vp_twelve'))
+      }
+      .width(StyleConstants.FULL_WIDTH)
+
+      LazyForEach(this.data, (item: Evaluate) => {
+        this.Evaluate(item);
+      }, (item: Evaluate, index?: number) => JSON.stringify(item) + index)
+      Text($r('app.string.evaluate_show_more'))
+        .fontSize($r('app.float.small_font_size'))
+        .width($r('app.float.evaluate_text_width'))
+        .height($r('app.float.evaluate_text_height'))
+        .textAlign(TextAlign.Center)
+        .border({
+          width: $r('app.float.vp_one'),
+          color: $r('app.color.twenty_alpha_black'),
+          radius: $r('app.float.evaluate_text_radius')
+        })
+        .onClick(() => {
+          if (this.data !== undefined) {
+            this.data.addData(this.data.totalCount(), moreEvaluate);
+          }
+        })
+    }
+    .backgroundStyle()
+  }
+
+  @Builder Evaluate(evaluate: Evaluate) {
+    Column({ space: StyleConstants.TWELVE_SPACE }) {
+      Row() {
+        Image(evaluate.userIcon !== undefined ? $rawfile(evaluate.userIcon) : '')
+          .objectFit(ImageFit.Contain)
+          .width($r('app.float.evaluate_icon_size'))
+          .height($r('app.float.evaluate_icon_size'))
+        Column({ space: StyleConstants.FOUR_SPACE }) {
+          Text(evaluate.userNumber)
+            .fontSize($r('app.float.small_font_size'))
+            .fontWeight(StyleConstants.FONT_WEIGHT_FIVE)
+            .fontColor(Color.Black)
+          Rating({ rating: Number(evaluate.rating) })
+            .hitTestBehavior(HitTestMode.None)
+            .size({
+              width: $r('app.float.evaluate_rating_width'),
+              height: $r('app.float.vp_twelve')
+            })
+            .stars(CommodityConstants.RATING_STARS)
+        }
+        .alignItems(HorizontalAlign.Start)
+        .width(StyleConstants.FULL_WIDTH)
+        .margin({ left: $r('app.float.vp_twelve') })
+      }
+      .width(StyleConstants.FULL_WIDTH)
+
+      Text(evaluate.desc)
+        .fontSize($r('app.float.small_font_size'))
+        .fontColor($r('app.color.eighty_alpha_black'))
+    }
+    .alignItems(HorizontalAlign.Start)
+  }
+
+  @Builder DetailList(images: string[]) {
+    Flex({
+      direction: FlexDirection.Column,
+      alignItems: ItemAlign.Center
+    }) {
+      ForEach(images, (image: string) => {
+        Image($rawfile(image))
+          .width(StyleConstants.FULL_WIDTH)
+          .constraintSize({ maxWidth: $r('app.float.detail_image_max_width') })
+          .objectFit(ImageFit.Cover)
+      }, (image: string) => JSON.stringify(image))
+    }
+    .width(StyleConstants.FULL_WIDTH)
+    .backgroundStyle()
+  }
+
+  @Builder BottomMenu() {
+    Flex({ alignItems: ItemAlign.Center }) {
+      Row() {
+        Flex({
+          direction: FlexDirection.Column,
+          justifyContent: FlexAlign.Center,
+          alignItems: ItemAlign.Center }) {
+          Image($r('app.media.ic_home'))
+            .height($r('app.float.button_image_size'))
+            .width($r('app.float.button_image_size'))
+          Text($r('app.string.index'))
+            .fontSize($r('app.float.micro_font_size'))
+            .fontColor($r('app.color.sixty_alpha_black'))
+            .margin({ top: $r('app.float.vp_four') })
+        }
+        .onClick(() => {
+          AppStorage.Set('IndexPage', CommodityConstants.INDEX_HOME);
+          router.back();
+        })
+        .height(StyleConstants.FULL_HEIGHT)
+        .width($r('app.float.button_flex_width'))
+
+        Flex({
+          direction: FlexDirection.Column,
+          justifyContent: FlexAlign.Center,
+          alignItems: ItemAlign.Center
+        }) {
+          Image($r('app.media.ic_shopping_cart'))
+            .height($r('app.float.button_image_size'))
+            .width($r('app.float.button_image_size'))
+          Text($r('app.string.cart'))
+            .fontSize($r('app.float.micro_font_size'))
+            .fontColor($r('app.color.sixty_alpha_black'))
+            .margin({ top: $r('app.float.vp_four') })
+        }.onClick(() => {
+          AppStorage.Set('IndexPage', CommodityConstants.INDEX_SHOPPING_CART);
+          router.back();
+        })
+        .height(StyleConstants.FULL_HEIGHT)
+        .width($r('app.float.button_flex_width'))
+      }
+      .height(StyleConstants.FULL_HEIGHT)
+      .margin({ right: $r('app.float.vp_eight') })
+
+      CapsuleGroupButton({
+        configs: [{
+          text: $r('app.string.insert_cart'),
+          onClick: ():void => this.bottomBtnClick(FinishType.JOIN_SHOPPING_CART)
+        }, {
+          text: $r('app.string.buy_now'),
+          onClick: ():void => this.bottomBtnClick(FinishType.BUY_NOW)
+        }]
+      })
+    }
+    .height($r('app.float.vp_fifty_six'))
+    .width(StyleConstants.FULL_WIDTH)
+    .padding({ right: $r('app.float.vp_sixteen') })
+    .backgroundColor($r('app.color.page_background'))
+  }
+
   build() {
     Stack({ alignContent: Alignment.TopStart }) {
+
+      Flex({ direction: FlexDirection.Column }) {
+        Scroll() {
+          GridRow({
+            columns: {
+              sm: GridConstants.COLUMN_FOUR,
+              md: GridConstants.COLUMN_EIGHT,
+              lg: GridConstants.COLUMN_TWELVE
+            },
+            gutter: GridConstants.GUTTER_TWELVE
+          }) {
+            GridCol({
+              span: {
+                sm: GridConstants.SPAN_FOUR,
+                md: GridConstants.SPAN_EIGHT,
+                lg: GridConstants.SPAN_TWELVE
+              }
+            }) {
+              if (this.info !== undefined) {
+                this.CustomSwiper(this.info?.images)
+              }
+            }
+
+            GridCol({
+              span: {
+                sm: GridConstants.SPAN_FOUR,
+                md: GridConstants.SPAN_EIGHT,
+                lg: GridConstants.SPAN_EIGHT
+              },
+              offset: { lg: GridConstants.OFFSET_TWO }
+            }) {
+              Column() {
+                if (this.info) {
+                  this.TitleBar(this.info)
+                  this.Specification()
+                  this.SpecialService()
+                  this.UserEvaluate()
+                  this.DetailList(this.info.images)
+                }
+              }
+            }
+          }
+        }
+        .flexGrow(StyleConstants.FLEX_GROW)
+
+        GridRow({
+          columns: {
+            sm: GridConstants.COLUMN_FOUR,
+            md: GridConstants.COLUMN_EIGHT,
+            lg: GridConstants.COLUMN_TWELVE
+          },
+          gutter: GridConstants.GUTTER_TWELVE
+        }) {
+          GridCol({
+            span: {
+              sm: GridConstants.SPAN_FOUR,
+              md: GridConstants.SPAN_EIGHT,
+              lg: GridConstants.SPAN_EIGHT
+            },
+            offset: { lg: GridConstants.OFFSET_TWO } }) {
+            this.BottomMenu()
+          }
+        }
+      }
 
       Flex({ direction: FlexDirection.Row, justifyContent: FlexAlign.SpaceBetween }) {
         Button() {
