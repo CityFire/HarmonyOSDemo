@@ -4,6 +4,7 @@ export { Logger } from './src/main/ets/utils/Logger'
 export { formatDate, getID } from './src/main/ets/utils/Utils'
 export { BreakpointConstants } from './src/main/ets/constants/BreakpointConstants'
 export { StyleConstants } from './src/main/ets/constants/StyleConstants'
+export { GridConstants } from './src/main/ets/constants/GridConstants';
 export { CommonDataSource } from './src/main/ets/utils/CommonDataSource'
 
 export { CommodityList } from './src/main/ets/components/CommodityList';

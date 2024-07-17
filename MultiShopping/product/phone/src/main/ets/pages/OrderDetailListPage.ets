@@ -4,8 +4,8 @@ import router from '@ohos.router';
 @Entry
 @Component
 struct OrderDetailListPage {
-  orderList: Order[] = [];
-  commodityList: Commodity[] = [];
+  @Provide orderList: Order[] = [];
+  @Provide commodityList: Commodity[] = [];
   @Provide currentTabIndex: number = 0;
   private localDataManager: LocalDataManager = LocalDataManager.instance();
 
