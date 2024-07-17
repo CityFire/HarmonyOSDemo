@@ -3,6 +3,7 @@
     "pages/MainPage",
     "pages/SplashPage",
     "pages/OrderDetailListPage",
-    "pages/CommodityDetailPage"
+    "pages/CommodityDetailPage",
+    "pages/ConfirmOrderPage"
   ]
 }
